@@ -52,14 +52,13 @@
         display: flex; 
         justify-content: flex-end; 
         align-items: center; 
-        /* Optimization for smooth scroll */
         transform: translateZ(0); 
         -webkit-transform: translateZ(0); 
     }
 
     .sticky-lang-bar.scrolled {
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      padding-bottom: 8px; /* Небольшой отступ, когда панель приклеена */
+      padding-bottom: 8px; 
     }
     
     .lang-switch{
@@ -154,7 +153,7 @@
       padding:14px;
       margin-bottom:14px;
       border:1px solid rgba(0,0,0,0.03);
-      /* KEY FIX: Добавляем отступ для якоря, чтобы заголовок не прятался под sticky-lang-bar */
+      /* KEY FIX: Добавляем отступ для якоря, чтобы заголовок не прятался под sticky-lang-bar. */
       scroll-margin-top: 55px; 
     }
     .section h2{
@@ -311,8 +310,8 @@
         id:'starters',
         title:{en:'Starters', pl:'Przystawki'},
         items:[
-          {enName:'Goma Wakame', plName:'Goma Wakame', descEN:'wakame salad', descPL:'sałatka wakame', price:'20 zł'},
-          {enName:'Ebiten (3 pcs)', plName:'Ebiten (3 szt.)', descEN:'shrimp tempura served with ponzu sauce', descPL:'krewetka tempura z sosem ponzu', price:'30 zł'},
+          {enName:'Goma Wakame', plName:'Goma Wakame', descEN:'wakame salad', descPL:'sałatka z wodorostów', price:'20 zł'},
+          {enName:'Ebiten (3 pcs)', plName:'Ebiten (3 szt.)', descEN:'shrimp tempura served with ponzu sauce', descPL:'krewetki smażone w cieście tempura podawane z sosem ponzu', price:'30 zł'},
           {enName:'Sake Tataki', plName:'Sake Tataki', descEN:'salmon tartare', descPL:'tatar z łososia', price:'50 zł'},
           {enName:'Maguro Tataki', plName:'Maguro Tataki', descEN:'tuna tartare', descPL:'tatar z tuńczyka', price:'55 zł'}
         ]
@@ -321,19 +320,38 @@
         id:'soups',
         title:{en:'Soups', pl:'Zupy'},
         items:[
-          {enName:'Ramen Chicken', plName:'Ramen Chicken', descEN:'flavorful broth with vegetables, meat and ramen noodles', descPL:'bulion z warzywami, mięsem i makaronem ramen', price:'48 zł'},
-          {enName:'Ramen Beef', plName:'Ramen Beef', descEN:'beef ramen', descPL:'ramen wołowy', price:'55 zł'}
+          {
+            enName:'Ramen Chicken / Beef', 
+            plName:'Ramen Chicken / Beef', 
+            descEN:'flavorful broth with vegetables, meat and ramen noodles. Chicken 48 zł / Beef 55 zł', 
+            descPL:'aromatyczny bulion z mięsem, warzywami i makaronem ramen', 
+            price:'48 zł / 55 zł'
+          }
         ]
       },
       {
         id:'sushi',
         title:{en:'Sushi — Nigiri / Futomaki', pl:'Sushi — Nigiri / Futomaki'},
         items:[
-          {enName:'Sake (Nigiri)', plName:'Sake (Nigiri)', descEN:'salmon — 2 pc', descPL:'łosoś — 2 szt.', price:'26 zł'},
-          {enName:'Ohio (Nigiri)', plName:'Ohio (Nigiri)', descEN:'butterfish — 2 pc', descPL:'butterfish — 2 szt.', price:'25 zł'},
-          {enName:'Maguro (Nigiri)', plName:'Maguro (Nigiri)', descEN:'tuna — 2 pc', descPL:'tuńczyk — 2 szt.', price:'30 zł'},
-          {enName:'Sake Philadelphia (Futomaki)', plName:'Sake Philadelphia (Futomaki)', descEN:'salmon with philadelphia cream cheese', descPL:'łosoś z serkiem philadelphia', price:'38 zł'},
-          {enName:'Maguro Negi Togarashi', plName:'Maguro Negi Togarashi', descEN:'tuna with spicy leek', descPL:'tuńczyk z ostrą dymką', price:'42 zł'}
+          // --- NIGIRI (2 szt.) ---
+          {enName:'Sake (Nigiri)', plName:'Sake (Nigiri)', descEN:'salmon', descPL:'łosoś', price:'26 zł'},
+          {enName:'Ohio (Nigiri)', plName:'Ohio (Nigiri)', descEN:'butterfish', descPL:'maślana', price:'25 zł'},
+          {enName:'Maguro (Nigiri)', plName:'Maguro (Nigiri)', descEN:'tuna', descPL:'tuńczyk', price:'30 zł'},
+          {enName:'Unagi (Nigiri)', plName:'Unagi (Nigiri)', descEN:'eel', descPL:'węgorz', price:'30 zł'}, 
+          {enName:'Hotate (Nigiri)', plName:'Hotate (Nigiri)', descEN:'scallops', descPL:'małże św. Jakuba', price:'32 zł'}, 
+          {enName:'Tako (Nigiri)', plName:'Tako (Nigiri)', descEN:'octopus', descPL:'ośmiornica', price:'30 zł'}, 
+          {enName:'Ika (Nigiri)', plName:'Ika (Nigiri)', descEN:'squid', descPL:'kalmar', price:'30 zł'}, 
+          {enName:'Ebi (Nigiri)', plName:'Ebi (Nigiri)', descEN:'shrimp', descPL:'krewetka', price:'30 zł'}, 
+          
+          // --- FUTOMAKI (4 szt.) ---
+          {enName:'Sake Philadelphia', plName:'Sake Philadelphia', descEN:'salmon with philadelphia cream cheese', descPL:'łosoś z serkiem philadelphia', price:'38 zł'},
+          {enName:'Maguro Negi Togarashi', plName:'Maguro Negi Togarashi', descEN:'tuna with spicy leek', descPL:'tuńczyk z porem na ostro', price:'42 zł'},
+          {enName:'Ohio Spice Mango', plName:'Ohio Spice Mango', descEN:'spicy butterfish with mango', descPL:'pikantna maślana z mango', price:'40 zł'}, 
+          {enName:'Ebi Spicy', plName:'Ebi Spicy', descEN:'spicy shrimp', descPL:'pikantna parzona krewetka', price:'40 zł'}, 
+          {enName:'Ebi Tempura', plName:'Ebi Tempura', descEN:'shrimp tempura', descPL:'krewetka w tempurze', price:'40 zł'}, 
+          {enName:'Unagi Kabayaki', plName:'Unagi Kabayaki', descEN:'grilled eel with kabayaki sauce', descPL:'grillowany węgorz w sosie kabayaki', price:'45 zł'}, 
+          {enName:'Ika Tempura', plName:'Ika Tempura', descEN:'squid tempura', descPL:'kalmar w tempurze', price:'48 zł'}, 
+          {enName:'Veggi', plName:'Veggi', descEN:'vegetables', descPL:'warzywa', price:'36 zł'} 
         ]
       },
       {
@@ -353,7 +371,7 @@
           {enName:'Maguro Orange Pepper', plName:'Maguro Orange Pepper', descEN:'tuna with chopped leek and orange pepper', descPL:'tuńczyk z siekanym porem i orange pepper', price:'45 zł'},
           {enName:'Ebi Ten Mamemori', plName:'Ebi Ten Mamemori', descEN:'shrimp tempura wrapped in soy paper', descPL:'krewetka w tempurze zawijana w papier sojowy', price:'42 zł'},
           {enName:'Gold California', plName:'Gold California', descEN:'surimi wrapped in salmon', descPL:'surimi owijane łososiem', price:'40 zł', imgFile:'SUSHI KSIESTWO SOCIAL MEDIA V2-94.jpg'},
-          {enName:'Rainbow', plName:'Rainbow', descEN:'assorted', descPL:'surimi owijane wachlarzem ryb', price:'48 zł', imgFile:'SUSHI KSIESTWO SOCIAL MEDIA V2-511.jpg'}
+          {enName:'Rainbow', plName:'Rainbow', descEN:'Surimi wrapped in variety of raw fish', descPL:'surimi owijane wachlarzem ryb', price:'48 zł', imgFile:'SUSHI KSIESTWO SOCIAL MEDIA V2-511.jpg'}
         ]
       },
       {
@@ -371,8 +389,11 @@
         id:'oyakomaki',
         title:{en:'Oyakomaki / Sashimi', pl:'Oyakomaki / Sashimi'},
         items:[
+          // Oyakomaki (2 szt.)
           {enName:'Sake Ebi Tataki (2 pcs)', plName:'Sake Ebi Tataki (2 szt.)', descEN:'chopped shrimp wrapped in salmon', descPL:'siekana krewetka owijana w łososia', price:'36 zł'},
           {enName:'Sake Ikura', plName:'Sake Ikura', descEN:'salmon caviar wrapped in tuna', descPL:'kawior z łososia owijany tuńczykiem', price:'42 zł'},
+          {enName:'Maguro Sake Tataki (2 pcs)', plName:'Maguro Sake Tataki (2 szt.)', descEN:'chopped salmon wrapped in tuna', descPL:'siekany łosoś owijany tuńczykiem', price:'45 zł'}, 
+          // Sashimi (9 szt.)
           {enName:'Sashimi Mizu (9 pcs)', plName:'Sashimi Mizu (9 szt.)', descEN:'slices of raw fish — salmon, tuna, butterfish', descPL:'slajsy surowej ryby – łosoś, tuńczyk, maślana', price:'95 zł'}
         ]
       }
