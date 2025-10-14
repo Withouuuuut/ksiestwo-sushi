@@ -30,9 +30,7 @@
     .wrap{
       width:100%;
       max-width:var(--maxw);
-      /* Убран фоновый узор */
-      background: var(--card); /* Только основной белый фон */
-      
+      background: var(--card); 
       border-radius:16px;
       padding:22px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
@@ -236,7 +234,7 @@
       .right{width:100%}
     }
     
-    /* Lightbox Styles */
+    /* --- LIGHTBOX STYLES (ОБНОВЛЕНЫ) --- */
     .lightbox {
       display: none;
       position: fixed;
@@ -246,14 +244,19 @@
       width: 100%;
       height: 100%;
       overflow: auto;
-      background-color: rgba(0, 0, 0, 0.9);
+      background-color: rgba(0, 0, 0, 0); /* Начальная прозрачность фона */
       align-items: center;
       justify-content: center;
-      transition: opacity 0.3s ease;
+      opacity: 0; /* Начальная непрозрачность */
+      transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out; /* Плавный переход для фона и прозрачности */
     }
+    
     .lightbox.open {
-      display: flex;
+      display: flex; /* Показываем элемент */
+      opacity: 1; /* Полностью непрозрачный */
+      background-color: rgba(0, 0, 0, 0.9); /* Конечный цвет фона */
     }
+    
     .lightbox-content {
       margin: auto;
       display: block;
@@ -262,7 +265,14 @@
       border-radius: var(--radius);
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
       cursor: pointer;
+      transform: scale(0.95); /* Начальное масштабирование */
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.5, 1.1); /* Эффект "прыжка" */
     }
+    
+    .lightbox.open .lightbox-content {
+        transform: scale(1); /* Конечное масштабирование */
+    }
+
     .lightbox-close {
       position: absolute;
       top: 15px;
@@ -743,30 +753,46 @@
     }
 
 
-    // --- LIGHTBOX LOGIC ---
+    // --- LIGHTBOX LOGIC (ОБНОВЛЕНО) ---
     const lightbox = document.getElementById('myLightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const closeBtn = document.querySelector('.lightbox-close');
 
     function openLightbox(imgPath) {
-      lightbox.classList.add('open');
       lightboxImg.src = imgPath;
+      lightbox.style.display = 'flex'; // Делаем его видимым, чтобы переход начался
+      
+      // Небольшая задержка, чтобы браузер успел отрисовать display:flex
+      // до применения класса open, что активирует плавный переход
+      setTimeout(() => {
+        lightbox.classList.add('open');
+      }, 10); 
     }
 
     function closeLightbox() {
       lightbox.classList.remove('open');
-      lightboxImg.src = ''; 
+      
+      // Ждем завершения анимации (0.3s) перед скрытием элемента
+      setTimeout(() => {
+        lightbox.style.display = 'none';
+        lightboxImg.src = ''; 
+      }, 300); 
     }
 
     closeBtn.onclick = closeLightbox;
     // Lightbox closes on background click
     lightbox.onclick = (e) => {
-      if (e.target === lightbox || e.target === lightboxImg) {
+      if (e.target === lightbox) {
         closeLightbox();
       }
     };
+    // Предотвращаем закрытие при клике на само изображение
+    lightboxImg.onclick = (e) => {
+      e.stopPropagation();
+    };
+
     
-    // ОБНОВЛЕННАЯ ФУНКЦИЯ: Прикрепляет слушателей к галерее (переход) и к меню (лайтбокс)
+    // ФУНКЦИЯ: Прикрепляет слушателей к галерее (переход) и к меню (лайтбокс)
     function attachLightboxListeners() {
       setTimeout(() => { 
         // 1. Слушатели для обычных элементов меню (открывают лайтбокс)
