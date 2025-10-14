@@ -59,7 +59,7 @@
 
     .sticky-lang-bar.scrolled {
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      padding-bottom: 8px; 
+      padding-bottom: 8px; /* Небольшой отступ, когда панель приклеена */
     }
     
     .lang-switch{
@@ -154,6 +154,8 @@
       padding:14px;
       margin-bottom:14px;
       border:1px solid rgba(0,0,0,0.03);
+      /* KEY FIX: Добавляем отступ для якоря, чтобы заголовок не прятался под sticky-lang-bar */
+      scroll-margin-top: 55px; 
     }
     .section h2{
       margin:0 0 8px 0;
@@ -417,7 +419,8 @@
         chip.onclick = ()=>{ 
             const targetElement = document.getElementById(sec.id);
             if (targetElement) {
-                // Scroll the wrap container to the element's position
+                // Scroll the wrap container to the element's position. 
+                // scroll-margin-top in CSS handles the offset from the sticky bar.
                 targetElement.scrollIntoView({behavior:'smooth', block:'start'});
             }
         };
@@ -504,7 +507,6 @@
       document.getElementById('notice-text').innerHTML = NOTICE_TEXTS[LANG];
 
       const contacts = document.getElementById('contacts');
-      // Вставляем иконки в блок контактов
       contacts.innerHTML = (LANG==='en')
         ? '📞 +48 602 111 144<br>📸 @ksiestwosushi<br>📍 ul. Example 12, Warsaw'
         : '📞 +48 602 111 144<br>📸 @ksiestwosushi<br>📍 ul. Example 12, Warszawa';
