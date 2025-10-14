@@ -172,6 +172,50 @@
       .content{flex-direction:column-reverse}
       .right{width:100%}
     }
+    
+    /* --- СТИЛИ ДЛЯ ЛАЙТБОКСА --- */
+    .lightbox {
+      display: none; /* Скрыто по умолчанию */
+      position: fixed; /* Поверх всего */
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.9); /* Черный фон с прозрачностью */
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.open {
+      display: flex; /* Показать при добавлении класса 'open' */
+    }
+    .lightbox-content {
+      margin: auto;
+      display: block;
+      max-width: 90%; /* Ограничение ширины */
+      max-height: 90vh; /* Ограничение высоты */
+      border-radius: var(--radius);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      cursor: pointer; /* Указывает, что можно кликнуть для закрытия */
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    .lightbox-close:hover,
+    .lightbox-close:focus {
+      color: #bbb;
+      text-decoration: none;
+    }
+    /* -------------------------- */
   </style>
 </head>
 <body>
@@ -219,7 +263,11 @@
       <div class="small" id="footer-right">Menu — open web version</div>
     </footer>
   </div>
-
+  
+  <div id="myLightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img">
+  </div>
   <script>
     // DATA: menu items with EN and PL text and prices (zł)
     const MENU = [
@@ -303,6 +351,9 @@
       });
     }
 
+    // Сохраняем оригинальную функцию для последующего вызова
+    const originalRenderMenu = renderMenu; 
+
     function renderMenu(){
       menuArea.innerHTML = '';
       MENU.forEach(sec=>{
@@ -321,17 +372,28 @@
           div.className='item';
 
           const thumb = document.createElement('div');
-          thumb.className='thumb';
-          // image placeholder - replace src with your photos
+          thumb.className = 'thumb';
+
+          const defaultImgPath = 'https://via.placeholder.com/300x200?text=photo';
+          const imgPath = it.imgFile ? ('images/' + it.imgFile) : defaultImgPath;
+          
+          // >>>>>>>>>>> ИЗМЕНЕНИЕ 1: Создание ссылки (<a>) вокруг изображения <<<<<<<<<<
+          const link = document.createElement('a');
+          link.href = '#'; 
+          link.className = 'js-lightbox-link'; 
+          link.dataset.img = imgPath; 
+
           const img = document.createElement('img');
-          img.style.width='100%';
-          img.style.height='100%';
-          img.style.objectFit='cover';
-          img.alt = (it[LANG==='en'?'enName':'plName']);
-          // --- ПРОВЕРКА НАЛИЧИЯ imgFile ДЛЯ УСТАНОВКИ ИЗОБРАЖЕНИЯ ---
-          img.src = it.imgFile ? ('images/' + it.imgFile) : 'https://via.placeholder.com/300x200?text=photo';
-          // Put your photos in a local folder named "images" next to this html file.
-          thumb.appendChild(img);
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'cover';
+          img.alt = (it[LANG==='en' ? 'enName' : 'plName']);
+          img.src = imgPath; 
+          
+          link.appendChild(img);
+          thumb.appendChild(link);
+          // >>>>>>>>>>> КОНЕЦ ИЗМЕНЕНИЯ 1 <<<<<<<<<<
+
 
           const meta = document.createElement('div');
           meta.className='meta';
@@ -373,6 +435,63 @@
         : '📞 +48 123 456 789<br>📸 @ksiestwosushi<br>📍 ul. Example 12, Warszawa';
     }
 
+
+    // --- ЛОГИКА ЛАЙТБОКСА ---
+    const lightbox = document.getElementById('myLightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.querySelector('.lightbox-close');
+
+    // Функция открытия лайтбокса
+    function openLightbox(imgPath) {
+      lightbox.classList.add('open');
+      lightboxImg.src = imgPath;
+    }
+
+    // Обработчик для закрытия лайтбокса
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImg.src = ''; 
+    }
+
+    // Присвоение обработчика закрытия
+    closeBtn.onclick = closeLightbox;
+    lightbox.onclick = (e) => {
+      // Закрываем, если кликнули на фон или само изображение, но не на кнопку закрытия
+      if (e.target === lightbox || e.target === lightboxImg) {
+        closeLightbox();
+      }
+    };
+
+    // Функция, которая ищет все ссылки и назначает им обработчик клика
+    function attachLightboxListeners() {
+      // Небольшая задержка, чтобы элементы успели появиться в DOM
+      setTimeout(() => { 
+        document.querySelectorAll('.js-lightbox-link').forEach(link => {
+          // Удаляем предыдущие обработчики (важно при смене языка)
+          link.onclick = null; 
+          
+          link.onclick = (e) => {
+            e.preventDefault(); // Останавливаем переход по ссылке
+            const imgPath = link.dataset.img;
+            // Открываем, только если это не заглушка
+            if (imgPath.indexOf('placeholder') === -1) {
+                openLightbox(imgPath);
+            }
+          };
+        });
+      }, 100); 
+    }
+    
+    // Переопределение функции renderMenu для добавления обработчиков после рендеринга
+    const tempRenderMenu = renderMenu;
+    renderMenu = function() {
+        tempRenderMenu(); // Вызываем оригинальную функцию рендеринга
+        attachLightboxListeners(); // Добавляем новые обработчики для лайтбокса
+    }
+
+    // --- КОНЕЦ ЛОГИКИ ЛАЙТБОКСА ---
+
+
     // language buttons
     langBtns.forEach(b=>{
       b.addEventListener('click', ()=>{
@@ -380,7 +499,8 @@
         b.classList.add('active');
         LANG = b.dataset.lang;
         createNav();
-        renderMenu();
+        // Здесь вызывается новая renderMenu, которая вызывает attachLightboxListeners
+        renderMenu(); 
         updateTexts();
       });
     });
