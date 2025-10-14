@@ -179,8 +179,6 @@
     /* СТИЛЬ ВЫДЕЛЕНИЯ */
     .item-highlight {
       background-color: #fffacd; /* Светло-желтый фон */
-      /* Используем !important, чтобы перебить стандартный фон при анимации, если понадобится, 
-         но лучше настраивать через селектор .item, чтобы избежать !important */
     }
 
 
@@ -356,10 +354,10 @@
   <script>
     // DATA: menu items with EN and PL text and prices (zł)
     const MENU = [
-      // НОВЫЙ РАЗДЕЛ ДЛЯ ГАЛЕРЕИ
+      // НОВЫЙ РАЗДЕЛ ДЛЯ ГАЛЕРЕИ (ПЕРЕИМЕНОВАН В "ПОПУЛЯРНЫЕ СУШИ")
       {
         id: 'sushi-gallery',
-        title: {en: 'Sushi Photo Gallery', pl: 'Galeria Zdjęć Sushi'},
+        title: {en: 'Popular Sushi', pl: 'Popularne Sushi'}, // <-- ИЗМЕНЕНО
         isGallery: true
       },
       // СУЩЕСТВУЮЩИЕ РАЗДЕЛЫ МЕНЮ
@@ -392,7 +390,7 @@
         id:'sushi',
         title:{en:'Sushi — Nigiri / Futomaki', pl:'Sushi — Nigiri / Futomaki'},
         items:[
-          // --- NIGIRI (2 szt.) - ИСПРАВЛЕНО КОЛИЧЕСТВО ---
+          // --- NIGIRI (2 szt.) ---
           {enName:'Sake (Nigiri 2 pcs)', plName:'Sake (Nigiri 2 szt.)', descEN:'salmon', descPL:'łosoś', price:'26 zł', itemId:'n-sake'},
           {enName:'Ohio (Nigiri 2 pcs)', plName:'Ohio (Nigiri 2 szt.)', descEN:'butterfish', descPL:'maślana', price:'25 zł', itemId:'n-ohio'},
           {enName:'Maguro (Nigiri 2 pcs)', plName:'Maguro (Nigiri 2 szt.)', descEN:'tuna', descPL:'tuńczyk', price:'30 zł', itemId:'n-maguro'},
@@ -402,7 +400,7 @@
           {enName:'Ika (Nigiri 2 pcs)', plName:'Ika (Nigiri 2 szt.)', descEN:'squid', descPL:'kalmar', price:'30 zł', itemId:'n-ika'}, 
           {enName:'Ebi (Nigiri 2 pcs)', plName:'Ebi (Nigiri 2 szt.)', descEN:'shrimp', descPL:'krewetka', price:'30 zł', itemId:'n-ebi'}, 
           
-          // --- FUTOMAKI (4 szt.) - ИСПРАВЛЕНО КОЛИЧЕСТВО ---
+          // --- FUTOMAKI (4 szt.) ---
           {enName:'Sake Philadelphia (4 pcs)', plName:'Sake Philadelphia (4 szt.)', descEN:'salmon with philadelphia cream cheese', descPL:'łosoś z serkiem philadelphia', price:'38 zł', itemId:'f-sakephi'},
           {enName:'Maguro Negi Togarashi (4 pcs)', plName:'Maguro Negi Togarashi (4 szt.)', descEN:'tuna with spicy leek', descPL:'tuńczyk z porem na ostro', price:'42 zł', itemId:'f-magnegi'},
           {enName:'Ohio Spice Mango (4 pcs)', plName:'Ohio Spice Mango (4 szt.)', descEN:'spicy butterfish with mango', descPL:'pikantna maślana z mango', price:'40 zł', itemId:'f-ohiomango'}, 
@@ -506,13 +504,14 @@
       });
     }
 
-    // НОВАЯ ФУНКЦИЯ: Сбор всех элементов для галереи
+    // ФУНКЦИЯ: Сбор всех элементов для галереи
     function getGalleryItems(lang) {
         const galleryItems = [];
         MENU.forEach(section => {
             if (section.items) {
                 section.items.forEach(item => {
-                    if (item.imgFile) {
+                    // Включаем в галерею только те элементы, у которых есть фото
+                    if (item.imgFile && item.itemId) { 
                         galleryItems.push({
                             name: item[lang + 'Name'],
                             imgFile: item.imgFile,
@@ -547,7 +546,7 @@
             
             galleryItems.forEach(item => {
                 const itemDiv = document.createElement('div');
-                itemDiv.className = 'gallery-item js-gallery-link'; // Новый класс для галереи
+                itemDiv.className = 'gallery-item js-gallery-link'; // Класс для перехода
                 itemDiv.dataset.img = 'images/' + item.imgFile;
                 itemDiv.dataset.targetId = item.itemId; // Целевой ID элемента в меню
 
@@ -590,8 +589,7 @@
                 const link = document.createElement('a');
                 link.href = '#'; 
                 
-                // Используем js-lightbox-link только для тех, у кого есть фото в списке меню
-                // Новая логика: если есть фото, то это лайтбокс (для элементов в стандартном списке)
+                // Используем js-lightbox-link, если есть фото
                 if (it.imgFile) {
                     link.className = 'js-lightbox-link'; 
                     link.dataset.img = imgPath; 
@@ -637,14 +635,14 @@
       });
     }
 
-    // НОВАЯ ФУНКЦИЯ: Убирает выделение со всех элементов
+    // ФУНКЦИЯ: Убирает выделение со всех элементов
     function clearHighlights() {
         document.querySelectorAll('.item').forEach(item => {
             item.classList.remove('item-highlight');
         });
     }
     
-    // НОВАЯ ФУНКЦИЯ: Переход к элементу и его выделение
+    // ФУНКЦИЯ: Переход к элементу и его выделение
     function goToAndHighlightItem(itemId) {
         const targetElement = document.getElementById(itemId);
         if (targetElement) {
@@ -652,6 +650,7 @@
             clearHighlights();
 
             // 2. Прокрутить до элемента
+            // Используем 'center' для лучшей видимости, но можно 'start'
             targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
 
             // 3. Выделить элемент
