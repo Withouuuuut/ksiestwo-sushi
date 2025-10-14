@@ -371,13 +371,45 @@
   <script>
     // DATA: menu items with EN and PL text and prices (zł)
     const MENU = [
-      // НОВЫЙ РАЗДЕЛ ДЛЯ ГАЛЕРЕИ (ПЕРЕИМЕНОВАН В "ПОПУЛЯРНЫЕ СУШИ")
+      // 1. НОВЫЙ РАЗДЕЛ ДЛЯ ГАЛЕРЕИ (Популярные Суши)
       {
         id: 'sushi-gallery',
-        title: {en: 'Popular Sushi', pl: 'Popularne Sushi'}, // <-- ИЗМЕНЕНО
+        title: {en: 'Popular Sushi', pl: 'Popularne Sushi'},
         isGallery: true
       },
-      // СУЩЕСТВУЮЩИЕ РАЗДЕЛЫ МЕНЮ
+      // 2. НОВЫЙ РАЗДЕЛ ДЛЯ НАБОРОВ
+      {
+        id:'sushi-sets',
+        title:{en:'Sushi Sets', pl:'Zestawy Sushi'},
+        items:[
+          {
+            enName:'KIRO (14 pcs)', 
+            plName:'KIRO (14 szt.)', 
+            descEN:'4x Hosomaki (tuna, salmon, butterfish), 4x Hosomaki (cucumber, oshinko, kampyo), 4x Futomaki Ohio/Kani (butterfish or surimi), 2x Nigiri (salmon)', 
+            descPL:'4x Hosomaki (tuńczyk, łosoś, maślana), 4x Hosomaki (ogórek, oshinko, kampyo), 4x Futomaki Ohio/Kani (maślana lub surimi), 2x Nigiri (łosoś)', 
+            price:'70 zł', 
+            itemId:'set-kiro'
+          },
+          {
+            enName:'ORENJI (16 pcs)', 
+            plName:'ORENJI (16 szt.)', 
+            descEN:'4x California Ebi (steamed shrimp), 4x California Awokado Kani (surimi wrapped in avocado), 4x Ohio/Awokado Kani (butterfish/surimi wrapped in sesame), 4x Nigiri (salmon/shrimp)', 
+            descPL:'4x California Ebi (parzona krewetka), 4x California Awokado Kani (surimi owijane awokado), 4x Ohio/Awokado Kani (maślana/surimi owijane w sezam), 4x Nigiri (łosoś/krewetka)', 
+            price:'90 zł', 
+            itemId:'set-orenji'
+          },
+          {
+            enName:'AKA (24 pcs)', 
+            plName:'AKA (24 szt.)', 
+            descEN:'4x Gold California (surimi wrapped in salmon), 4x Ebi Ten (shrimp tempura), 4x Mango Sake (salmon wrapped in mango), 4x Futomaki Ohio Ten (butterfish tempura), 4x Futomaki Ebi Spicy (spicy shrimp), 4x Nigiri (tuna/eel)', 
+            descPL:'4x Gold California (surimi owijane łososiem), 4x Ebi Ten (krewetka w tempurze), 4x Mango Sake (łosoś owijany mango), 4x Futomaki Ohio Ten (maślana w tempurze), 4x Futomaki Ebi Spicy (pikantna krewetka), 4x Nigiri (tuńczyk/węgorz)', 
+            price:'130 zł', 
+            imgFile:'image_b8bc97.jpg', 
+            itemId:'set-aka'
+          }
+        ]
+      },
+      // 3. СУЩЕСТВУЮЩИЕ РАЗДЕЛЫ МЕНЮ
       {
         id:'starters',
         title:{en:'Starters', pl:'Przystawki'},
@@ -407,7 +439,7 @@
         id:'sushi',
         title:{en:'Sushi — Nigiri / Futomaki', pl:'Sushi — Nigiri / Futomaki'},
         items:[
-          // --- NIGIRI (2 шт.) ---
+          // --- NIGIRI (2 szt.) ---
           {enName:'Sake (Nigiri 2 pcs)', plName:'Sake (Nigiri 2 szt.)', descEN:'salmon', descPL:'łosoś', price:'26 zł', itemId:'n-sake'},
           {enName:'Ohio (Nigiri 2 pcs)', plName:'Ohio (Nigiri 2 szt.)', descEN:'butterfish', descPL:'maślana', price:'25 zł', itemId:'n-ohio'},
           {enName:'Maguro (Nigiri 2 pcs)', plName:'Maguro (Nigiri 2 szt.)', descEN:'tuna', descPL:'tuńczyk', price:'30 zł', itemId:'n-maguro'},
@@ -417,7 +449,7 @@
           {enName:'Ika (Nigiri 2 pcs)', plName:'Ika (Nigiri 2 szt.)', descEN:'squid', descPL:'kalmar', price:'30 zł', itemId:'n-ika'}, 
           {enName:'Ebi (Nigiri 2 pcs)', plName:'Ebi (Nigiri 2 szt.)', descEN:'shrimp', descPL:'krewetka', price:'30 zł', itemId:'n-ebi'}, 
           
-          // --- FUTOMAKI (4 шт.) ---
+          // --- FUTOMAKI (4 szt.) ---
           {enName:'Sake Philadelphia (4 pcs)', plName:'Sake Philadelphia (4 szt.)', descEN:'salmon with philadelphia cream cheese', descPL:'łosoś z serkiem philadelphia', price:'38 zł', itemId:'f-sakephi'},
           {enName:'Maguro Negi Togarashi (4 pcs)', plName:'Maguro Negi Togarashi (4 szt.)', descEN:'tuna with spicy leek', descPL:'tuńczyk z porem na ostro', price:'42 zł', itemId:'f-magnegi'},
           {enName:'Ohio Spice Mango (4 pcs)', plName:'Ohio Spice Mango (4 szt.)', descEN:'spicy butterfish with mango', descPL:'pikantna maślana z mango', price:'40 zł', itemId:'f-ohiomango'}, 
@@ -631,13 +663,13 @@
                 name.textContent = (LANG==='en'?it.enName:it.plName);
                 const desc = document.createElement('div');
                 desc.className='desc';
-                desc.textContent = (LANG==='en'?it.descEN:it.descPL) || '';
+                desc.innerHTML = (LANG==='en'?it.descEN:it.descPL) || '';
                 const price = document.createElement('div');
                 price.className='price';
                 price.textContent = it.price || '';
 
                 meta.appendChild(name);
-                if(desc.textContent) meta.appendChild(desc);
+                if(desc.innerHTML) meta.appendChild(desc);
                 meta.appendChild(price);
 
                 div.appendChild(thumb);
