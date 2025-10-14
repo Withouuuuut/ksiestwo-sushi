@@ -120,7 +120,26 @@
       margin: 14px 0;
       overflow-x: auto;
       padding-bottom: 8px; 
+      
+      /* СТИЛИ ДЛЯ ИНДИКАЦИИ ПРОКРУТКИ */
+      padding-left: 10px; 
+      padding-right: 10px;
+      margin-left: -10px;
+      margin-right: -10px;
+      
+      /* Градиентные тени */
+      box-shadow: 
+        inset 10px 0 8px -8px rgba(0,0,0,0.2), 
+        inset -10px 0 8px -8px rgba(0,0,0,0.2); 
+      
+      /* Скрываем скроллбар */
+      -ms-overflow-style: none; 
+      scrollbar-width: none; 
     }
+    nav::-webkit-scrollbar {
+        display: none; 
+    }
+    
     .nav-chip{
       flex-shrink: 0;
       background:var(--card);
@@ -153,7 +172,6 @@
       padding:14px;
       margin-bottom:14px;
       border:1px solid rgba(0,0,0,0.03);
-      /* KEY FIX: Добавляем отступ для якоря, чтобы заголовок не прятался под sticky-lang-bar. */
       scroll-margin-top: 55px; 
     }
     .section h2{
@@ -172,13 +190,12 @@
       align-items:center;
       padding:8px;
       border-radius:10px;
-      /* Добавление transition для выделения */
       transition: background-color 0.4s ease-out; 
     }
     
     /* СТИЛЬ ВЫДЕЛЕНИЯ */
     .item-highlight {
-      background-color: #fffacd; /* Светло-желтый фон */
+      background-color: #fffacd; 
     }
 
 
@@ -357,7 +374,7 @@
       // НОВЫЙ РАЗДЕЛ ДЛЯ ГАЛЕРЕИ (ПЕРЕИМЕНОВАН В "ПОПУЛЯРНЫЕ СУШИ")
       {
         id: 'sushi-gallery',
-        title: {en: 'Popular', pl: 'Popularne'}, // <-- ИЗМЕНЕНО
+        title: {en: 'Popular Sushi', pl: 'Popularne Sushi'}, // <-- ИЗМЕНЕНО
         isGallery: true
       },
       // СУЩЕСТВУЮЩИЕ РАЗДЕЛЫ МЕНЮ
@@ -390,7 +407,7 @@
         id:'sushi',
         title:{en:'Sushi — Nigiri / Futomaki', pl:'Sushi — Nigiri / Futomaki'},
         items:[
-          // --- NIGIRI (2 szt.) ---
+          // --- NIGIRI (2 шт.) ---
           {enName:'Sake (Nigiri 2 pcs)', plName:'Sake (Nigiri 2 szt.)', descEN:'salmon', descPL:'łosoś', price:'26 zł', itemId:'n-sake'},
           {enName:'Ohio (Nigiri 2 pcs)', plName:'Ohio (Nigiri 2 szt.)', descEN:'butterfish', descPL:'maślana', price:'25 zł', itemId:'n-ohio'},
           {enName:'Maguro (Nigiri 2 pcs)', plName:'Maguro (Nigiri 2 szt.)', descEN:'tuna', descPL:'tuńczyk', price:'30 zł', itemId:'n-maguro'},
@@ -400,7 +417,7 @@
           {enName:'Ika (Nigiri 2 pcs)', plName:'Ika (Nigiri 2 szt.)', descEN:'squid', descPL:'kalmar', price:'30 zł', itemId:'n-ika'}, 
           {enName:'Ebi (Nigiri 2 pcs)', plName:'Ebi (Nigiri 2 szt.)', descEN:'shrimp', descPL:'krewetka', price:'30 zł', itemId:'n-ebi'}, 
           
-          // --- FUTOMAKI (4 szt.) ---
+          // --- FUTOMAKI (4 шт.) ---
           {enName:'Sake Philadelphia (4 pcs)', plName:'Sake Philadelphia (4 szt.)', descEN:'salmon with philadelphia cream cheese', descPL:'łosoś z serkiem philadelphia', price:'38 zł', itemId:'f-sakephi'},
           {enName:'Maguro Negi Togarashi (4 pcs)', plName:'Maguro Negi Togarashi (4 szt.)', descEN:'tuna with spicy leek', descPL:'tuńczyk z porem na ostro', price:'42 zł', itemId:'f-magnegi'},
           {enName:'Ohio Spice Mango (4 pcs)', plName:'Ohio Spice Mango (4 szt.)', descEN:'spicy butterfish with mango', descPL:'pikantna maślana z mango', price:'40 zł', itemId:'f-ohiomango'}, 
@@ -516,8 +533,8 @@
                             name: item[lang + 'Name'],
                             imgFile: item.imgFile,
                             price: item.price,
-                            itemId: item.itemId, // Передаем ID для перехода
-                            sectionId: section.id // Передаем ID секции для перехода
+                            itemId: item.itemId, 
+                            sectionId: section.id 
                         });
                     }
                 });
@@ -650,7 +667,6 @@
             clearHighlights();
 
             // 2. Прокрутить до элемента
-            // Используем 'center' для лучшей видимости, но можно 'start'
             targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
 
             // 3. Выделить элемент
@@ -764,4 +780,3 @@
   </script>
 </body>
 </html>
-
