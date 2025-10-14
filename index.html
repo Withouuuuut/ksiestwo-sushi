@@ -1,5 +1,520 @@
-// ...
-{enName:'Awokado Sake', plName:'Awokado Sake', descEN:'salmon wrapped in avocado', descPL:'łosoś w awokado', price:'42 zł', **imgFile**:'**SUSHI KSIESTWO SOCIAL MEDIA V2-94.jpg**'},
-// ...
-{enName:'Gold California', plName:'Gold California', descEN:'surimi wrapped in salmon', descPL:'surimi owinięte łososiem', price:'40 zł', **imgFile**:'**SUSHI KSIESTWO SOCIAL MEDIA V2-43.jpg**'},
-// ...
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Księstwo Sushi — Menu</title>
+  <style>
+    :root{
+      --bg:#f8f6f4;
+      --card:#ffffff;
+      --muted:#7b7b7b;
+      --accent:#d88b6a;
+      --text:#111;
+      --maxw:1000px;
+      --radius:12px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Georgia", "Times New Roman", serif;
+      background: var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:24px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:var(--maxw);
+      background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.95));
+      border-radius:16px;
+      padding:22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:8px;
+    }
+    .brand{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:8px;
+      background:linear-gradient(135deg,var(--accent),#f3c9b3);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:#fff;
+      font-size:20px;
+      box-shadow:0 6px 18px rgba(216,139,106,0.25);
+    }
+    h1{margin:0;font-size:20px;letter-spacing:0.6px}
+    .sub{color:var(--muted); font-size:13px}
+
+    .lang-switch{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .lang-btn{
+      background:transparent;
+      border:1px solid rgba(0,0,0,0.06);
+      padding:8px 10px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .lang-btn.active{
+      background:var(--accent);
+      color:white;
+      border-color:transparent;
+    }
+
+    nav{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin:14px 0;
+    }
+    .nav-chip{
+      background:var(--card);
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:600;
+      border:1px solid rgba(0,0,0,0.03);
+      cursor:pointer;
+      font-size:14px;
+    }
+
+    .content{
+      display:flex;
+      gap:28px;
+      align-items:flex-start;
+    }
+
+    .left{
+      flex:1.1;
+      min-width:260px;
+    }
+    .right{
+      width:320px;
+      min-width:220px;
+    }
+
+    .section{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:14px;
+      margin-bottom:14px;
+      border:1px solid rgba(0,0,0,0.03);
+    }
+    .section h2{
+      margin:0 0 8px 0;
+      font-size:16px;
+      letter-spacing:0.8px;
+    }
+    .items{
+      display:grid;
+      gap:10px;
+    }
+
+    .item{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:8px;
+      border-radius:10px;
+    }
+    .thumb{
+      width:88px;
+      height:62px;
+      background:#eee;
+      border-radius:8px;
+      overflow:hidden;
+      flex-shrink:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .meta{flex:1}
+    .name{font-weight:700;margin-bottom:6px}
+    .desc{font-size:13px;color:var(--muted);margin-bottom:6px}
+    .price{font-weight:800;color:var(--accent)}
+
+    footer{
+      margin-top:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .contacts{color:var(--muted); font-size:14px}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* responsive */
+    @media (max-width:900px){
+      .content{flex-direction:column-reverse}
+      .right{width:100%}
+    }
+    
+    /* --- СТИЛИ ДЛЯ ЛАЙТБОКСА --- */
+    .lightbox {
+      display: none; /* Скрыто по умолчанию */
+      position: fixed; /* Поверх всего */
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.9); /* Черный фон с прозрачностью */
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.open {
+      display: flex; /* Показать при добавлении класса 'open' */
+    }
+    .lightbox-content {
+      margin: auto;
+      display: block;
+      max-width: 90%; /* Ограничение ширины */
+      max-height: 90vh; /* Ограничение высоты */
+      border-radius: var(--radius);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      cursor: pointer; /* Указывает, что можно кликнуть для закрытия */
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    .lightbox-close:hover,
+    .lightbox-close:focus {
+      color: #bbb;
+      text-decoration: none;
+    }
+    /* -------------------------- */
+  </style>
+</head>
+<body>
+  <div class="wrap" id="app">
+    <header>
+      <div class="brand">
+        <div class="logo">KS</div>
+        <div>
+          <h1 id="title">Księstwo Sushi</h1>
+          <div class="sub" id="subtitle">Fine sushi — Menu</div>
+        </div>
+      </div>
+
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="pl">PL</button>
+      </div>
+    </header>
+
+    <nav id="nav"></nav>
+
+    <div class="content">
+      <div class="left" id="menu-area">
+        </div>
+
+      <aside class="right">
+        <div class="section">
+          <h2 id="hours-title">Contacts</h2>
+          <div class="small" id="contacts">
+            📞 +48 123 456 789<br>
+            📸 @ksiestwosushi<br>
+            📍 ul. Example 12, Warsaw
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 id="notice-title">Notice</h2>
+          <div class="small">We kindly inform you that we add a waiter service of 10% to the final bill.</div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <div class="contacts" id="footer-left">Księstwo Sushi</div>
+      <div class="small" id="footer-right">Menu — open web version</div>
+    </footer>
+  </div>
+  
+  <div id="myLightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img">
+  </div>
+  <script>
+    // DATA: menu items with EN and PL text and prices (zł)
+    const MENU = [
+      {
+        id:'starters',
+        title:{en:'Starters', pl:'Przystawki'},
+        items:[
+          {enName:'Goma Wakame', plName:'Goma Wakame', descEN:'wakame salad', descPL:'sałatka wakame', price:'20 zł'},
+          {enName:'Ebiten (3 pcs)', plName:'Ebiten (3 szt.)', descEN:'shrimp tempura served with ponzu sauce', descPL:'krewetka tempura z sosem ponzu', price:'30 zł'},
+          {enName:'Sake Tataki', plName:'Sake Tataki', descEN:'salmon tartare', descPL:'tatar z łososia', price:'50 zł'},
+          {enName:'Maguro Tataki', plName:'Maguro Tataki', descEN:'tuna tartare', descPL:'tatar z tuńczyka', price:'55 zł'}
+        ]
+      },
+      {
+        id:'soups',
+        title:{en:'Soups', pl:'Zupy'},
+        items:[
+          {enName:'Ramen Chicken', plName:'Ramen Chicken', descEN:'flavorful broth with vegetables, meat and ramen noodles', descPL:'bulion z warzywami, mięsem i makaronem ramen', price:'48 zł'},
+          {enName:'Ramen Beef', plName:'Ramen Beef', descEN:'beef ramen', descPL:'ramen wołowy', price:'55 zł'}
+        ]
+      },
+      {
+        id:'sushi',
+        title:{en:'Sushi — Nigiri / Futomaki', pl:'Sushi — Nigiri / Futomaki'},
+        items:[
+          {enName:'Sake (Nigiri)', plName:'Sake (Nigiri)', descEN:'salmon — 2 pc', descPL:'łosoś — 2 szt.', price:'26 zł'},
+          {enName:'Ohio (Nigiri)', plName:'Ohio (Nigiri)', descEN:'butterfish — 2 pc', descPL:'butterfish — 2 szt.', price:'25 zł'},
+          {enName:'Maguro (Nigiri)', plName:'Maguro (Nigiri)', descEN:'tuna — 2 pc', descPL:'tuńczyk — 2 szt.', price:'30 zł'},
+          {enName:'Sake Philadelphia (Futomaki)', plName:'Sake Philadelphia (Futomaki)', descEN:'salmon with philadelphia cream cheese', descPL:'łosoś z serkiem philadelphia', price:'38 zł'},
+          {enName:'Maguro Negi Togarashi', plName:'Maguro Negi Togarashi', descEN:'tuna with spicy leek', descPL:'tuńczyk z ostrą dymką', price:'42 zł'}
+        ]
+      },
+      {
+        id:'uramaki',
+        title:{en:'Uramaki (8 pc)', pl:'Uramaki (8 szt.)'},
+        items:[
+          {enName:'Sake Philadelphia', plName:'Sake Philadelphia', descEN:'salmon with philadelphia cream cheese', descPL:'łosoś z serkiem philadelphia', price:'38 zł'},
+          // >>>>>>>>>>> ИЗМЕНЕНИЕ: Добавлен imgFile для ролла Awokado Sake <<<<<<<<<<
+          {enName:'Awokado Sake', plName:'Awokado Sake', descEN:'salmon wrapped in avocado', descPL:'łosoś w awokado', price:'42 zł', **imgFile**:'**SUSHI KSIESTWO SOCIAL MEDIA V2-94.jpg**'},
+          {enName:'Mango Sake', plName:'Mango Sake', descEN:'salmon wrapped in mango', descPL:'łosoś w mango', price:'42 zł'},
+          {enName:'Maguro Orange Pepper', plName:'Maguro Orange Pepper', descEN:'tuna with chopped leek and orange pepper', descPL:'tuńczyk z porem i pomarańczowym pieprzem', price:'45 zł'},
+          {enName:'Ebi Ten Mamemori', plName:'Ebi Ten Mamemori', descEN:'shrimp tempura wrapped in soy paper', descPL:'krewetka tempura w sojowym papierze', price:'42 zł'},
+          // >>>>>>>>>>> ИЗМЕНЕНИЕ: ОБНОВЛЕН imgFile для ролла California Gold <<<<<<<<<<
+          {enName:'Gold California', plName:'Gold California', descEN:'surimi wrapped in salmon', descPL:'surimi owinięte łososiem', price:'40 zł', **imgFile**:'**SUSHI KSIESTWO SOCIAL MEDIA V2-43.jpg**'},
+          {enName:'Rainbow', plName:'Rainbow', descEN:'assorted', descPL:'asortyмент', price:'48 zł'}
+        ]
+      },
+      {
+        id:'uramaki-temp',
+        title:{en:'Uramaki w Tempurze', pl:'Uramaki w tempurze'},
+        items:[
+          {enName:'Tempura Sake', plName:'Tempura Sake', descEN:'salmon', descPL:'łosoś', price:'—'},
+          {enName:'Tempura Ohio', plName:'Tempura Ohio', descEN:'butterfish', descPL:'butterfish', price:'—'},
+          {enName:'Tempura Maguro', plName:'Tempura Maguro', descEN:'tuna', descPL:'tuńczyk', price:'—'}
+        ]
+      },
+      {
+        id:'oyakomaki',
+        title:{en:'Oyakomaki / Sashimi', pl:'Oyakomaki / Sashimi'},
+        items:[
+          {enName:'Sake Ebi Tataki (2 pcs)', plName:'Sake Ebi Tataki (2 szt.)', descEN:'chopped shrimp wrapped in salmon', descPL:'posiekana krewetka w łososiu', price:'36 zł'},
+          {enName:'Sake Ikura', plName:'Sake Ikura', descEN:'salmon caviar wrapped in tuna', descPL:'ikura w tuńczyku', price:'42 zł'},
+          {enName:'Sashimi Mizu (9 pcs)', plName:'Sashimi Mizu (9 szt.)', descEN:'slices of raw fish — salmon, tuna, butterfish', descPL:'plastry surowych ryb — łosoś, tuńczyk, butterfish', price:'95 zł'}
+        ]
+      }
+    ];
+
+    // helper to render
+    const nav = document.getElementById('nav');
+    const menuArea = document.getElementById('menu-area');
+    const langBtns = document.querySelectorAll('.lang-btn');
+    let LANG = 'en';
+
+    function createNav(){
+      nav.innerHTML = '';
+      MENU.forEach(sec=>{
+        const chip = document.createElement('button');
+        chip.className='nav-chip';
+        chip.textContent = sec.title[LANG];
+        chip.onclick = ()=>{ document.getElementById(sec.id).scrollIntoView({behavior:'smooth', block:'start'});};
+        nav.appendChild(chip);
+      });
+    }
+
+    // Сохраняем оригинальную функцию для последующего вызова
+    const originalRenderMenu = renderMenu; 
+
+    function renderMenu(){
+      menuArea.innerHTML = '';
+      MENU.forEach(sec=>{
+        const s = document.createElement('section');
+        s.className='section';
+        s.id = sec.id;
+        const h2 = document.createElement('h2');
+        h2.textContent = sec.title[LANG];
+        s.appendChild(h2);
+
+        const container = document.createElement('div');
+        container.className='items';
+
+        sec.items.forEach(it=>{
+          const div = document.createElement('div');
+          div.className='item';
+
+          const thumb = document.createElement('div');
+          thumb.className = 'thumb';
+
+          // >>>>>>>>>>> ИЗМЕНЕНИЕ 2: Логика формирования пути к изображению обновлена <<<<<<<<<<
+          // Используем заполнитель, если imgFile не указан
+          const defaultImgPath = 'https://via.placeholder.com/300x200?text=photo';
+          // Если imgFile указан, используем его, предполагая, что он находится в папке 'images/'
+          const imgPath = it.imgFile ? ('images/' + it.imgFile) : defaultImgPath;
+          // >>>>>>>>>>> КОНЕЦ ИЗМЕНЕНИЯ 2 <<<<<<<<<<
+          
+          
+          // >>>>>>>>>>> ИЗМЕНЕНИЕ 1: Создание ссылки (<a>) вокруг изображения <<<<<<<<<<
+          const link = document.createElement('a');
+          link.href = '#'; 
+          link.className = 'js-lightbox-link'; 
+          link.dataset.img = imgPath; 
+
+          const img = document.createElement('img');
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'cover';
+          img.alt = (it[LANG==='en' ? 'enName' : 'plName']);
+          img.src = imgPath; 
+          
+          link.appendChild(img);
+          thumb.appendChild(link);
+          // >>>>>>>>>>> КОНЕЦ ИЗМЕНЕНИЯ 1 <<<<<<<<<<
+
+
+          const meta = document.createElement('div');
+          meta.className='meta';
+          const name = document.createElement('div');
+          name.className='name';
+          name.textContent = (LANG==='en'?it.enName:it.plName);
+          const desc = document.createElement('div');
+          desc.className='desc';
+          desc.textContent = (LANG==='en'?it.descEN:it.descPL) || '';
+          const price = document.createElement('div');
+          price.className='price';
+          price.textContent = it.price || '';
+
+          meta.appendChild(name);
+          if(desc.textContent) meta.appendChild(desc);
+          meta.appendChild(price);
+
+          div.appendChild(thumb);
+          div.appendChild(meta);
+          container.appendChild(div);
+        });
+
+        s.appendChild(container);
+        menuArea.appendChild(s);
+      });
+    }
+
+    function updateTexts(){
+      document.getElementById('title').textContent = 'Księstwo Sushi';
+      document.getElementById('subtitle').textContent = (LANG==='en') ? 'Fine sushi — Menu' : 'Wyborne sushi — Menu';
+      document.getElementById('hours-title').textContent = (LANG==='en') ? 'Contacts' : 'Kontakt';
+      document.getElementById('notice-title').textContent = (LANG==='en') ? 'Notice' : 'Uwaga';
+      document.getElementById('footer-left').textContent = 'Księstwo Sushi';
+      document.getElementById('footer-right').textContent = (LANG==='en') ? 'Menu — web version' : 'Menu — wersja online';
+      // update contact block (if you want different translations)
+      const contacts = document.getElementById('contacts');
+      contacts.innerHTML = (LANG==='en')
+        ? '📞 +48 123 456 789<br>📸 @ksiestwosushi<br>📍 ul. Example 12, Warsaw'
+        : '📞 +48 123 456 789<br>📸 @ksiestwosushi<br>📍 ul. Example 12, Warszawa';
+    }
+
+
+    // --- ЛОГИКА ЛАЙТБОКСА ---
+    const lightbox = document.getElementById('myLightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.querySelector('.lightbox-close');
+
+    // Функция открытия лайтбокса
+    function openLightbox(imgPath) {
+      lightbox.classList.add('open');
+      lightboxImg.src = imgPath;
+    }
+
+    // Обработчик для закрытия лайтбокса
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightboxImg.src = ''; 
+    }
+
+    // Присвоение обработчика закрытия
+    closeBtn.onclick = closeLightbox;
+    lightbox.onclick = (e) => {
+      // Закрываем, если кликнули на фон или само изображение, но не на кнопку закрытия
+      if (e.target === lightbox || e.target === lightboxImg) {
+        closeLightbox();
+      }
+    };
+
+    // Функция, которая ищет все ссылки и назначает им обработчик клика
+    function attachLightboxListeners() {
+      // Небольшая задержка, чтобы элементы успели появиться в DOM
+      setTimeout(() => { 
+        document.querySelectorAll('.js-lightbox-link').forEach(link => {
+          // Удаляем предыдущие обработчики (важно при смене языка)
+          link.onclick = null; 
+          
+          link.onclick = (e) => {
+            e.preventDefault(); // Останавливаем переход по ссылке
+            const imgPath = link.dataset.img;
+            // Открываем, только если это не заглушка
+            if (imgPath.indexOf('placeholder') === -1) {
+                openLightbox(imgPath);
+            }
+          };
+        });
+      }, 100); 
+    }
+    
+    // Переопределение функции renderMenu для добавления обработчиков после рендеринга
+    const tempRenderMenu = renderMenu;
+    renderMenu = function() {
+        tempRenderMenu(); // Вызываем оригинальную функцию рендеринга
+        attachLightboxListeners(); // Добавляем новые обработчики для лайтбокса
+    }
+
+    // --- КОНЕЦ ЛОГИКИ ЛАЙТБОКСА ---
+
+
+    // language buttons
+    langBtns.forEach(b=>{
+      b.addEventListener('click', ()=>{
+        langBtns.forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        LANG = b.dataset.lang;
+        createNav();
+        // Здесь вызывается новая renderMenu, которая вызывает attachLightboxListeners
+        renderMenu(); 
+        updateTexts();
+      });
+    });
+
+    // init
+    createNav();
+    renderMenu();
+    updateTexts();
+  </script>
+</body>
+</html>
