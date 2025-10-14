@@ -35,6 +35,32 @@
       padding:22px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     }
+    
+    /* --- STICKY STYLES --- */
+    .sticky-container{
+        position: sticky;
+        top: -22px; /* Поднимаем немного, чтобы кнопки прилипали ровно к краю wrap */
+        margin: 0 -22px; /* Растягиваем на всю ширину wrap */
+        padding: 22px;
+        background: inherit;
+        z-index: 10;
+        transition: box-shadow 0.3s;
+    }
+
+    .sticky-container.scrolled {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding-bottom: 8px; /* Немного уменьшаем отступ сверху, когда прилипло */
+    }
+
+    .lang-switch{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content: flex-end; /* Переносим вправо */
+      margin-bottom: 8px; /* Добавляем небольшой отступ */
+    }
+    /* --------------------- */
+
 
     header{
       display:flex;
@@ -64,11 +90,6 @@
     h1{margin:0;font-size:20px;letter-spacing:0.6px}
     .sub{color:var(--muted); font-size:13px}
 
-    .lang-switch{
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
     .lang-btn{
       background:transparent;
       border:1px solid rgba(0,0,0,0.06);
@@ -87,7 +108,9 @@
       display:flex;
       gap:12px;
       flex-wrap:wrap;
-      margin:14px 0;
+      margin: 14px 0 0; /* Удаляем отступ сверху, он теперь в sticky-container */
+      padding-top: 8px; /* Добавляем отступ для красоты */
+      border-top: 1px solid rgba(0,0,0,0.05);
     }
     .nav-chip{
       background:var(--card);
@@ -103,6 +126,7 @@
       display:flex;
       gap:28px;
       align-items:flex-start;
+      margin-top: 14px;
     }
 
     .left{
@@ -228,14 +252,15 @@
           <div class="sub" id="subtitle">Fine sushi — Menu</div>
         </div>
       </div>
+      </header>
 
-      <div class="lang-switch">
-        <button class="lang-btn active" data-lang="en">EN</button>
-        <button class="lang-btn" data-lang="pl">PL</button>
-      </div>
-    </header>
-
-    <nav id="nav"></nav>
+    <div class="sticky-container" id="sticky-container">
+        <div class="lang-switch">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="pl">PL</button>
+        </div>
+        <nav id="nav"></nav>
+    </div>
 
     <div class="content">
       <div class="left" id="menu-area">
@@ -319,7 +344,6 @@
           {enName:'Maguro Orange Pepper', plName:'Maguro Orange Pepper', descEN:'tuna with chopped leek and orange pepper', descPL:'tuńczyk z porem i pomarańczowym pieprzem', price:'45 zł'},
           {enName:'Ebi Ten Mamemori', plName:'Ebi Ten Mamemori', descEN:'shrimp tempura wrapped in soy paper', descPL:'krewetka tempura w sojowym papierze', price:'42 zł'},
           {enName:'Gold California', plName:'Gold California', descEN:'surimi wrapped in salmon', descPL:'surimi owinięte łososiem', price:'40 zł', imgFile:'SUSHI KSIESTWO SOCIAL MEDIA V2-94.jpg'},
-          // ИСПРАВЛЕНО
           {enName:'Rainbow', plName:'Rainbow', descEN:'assorted', descPL:'asortyment', price:'48 zł', imgFile:'SUSHI KSIESTWO SOCIAL MEDIA V2-511.jpg'}
         ]
       },
@@ -340,7 +364,6 @@
         items:[
           {enName:'Sake Ebi Tataki (2 pcs)', plName:'Sake Ebi Tataki (2 szt.)', descEN:'chopped shrimp wrapped in salmon', descPL:'posiekana krewetka w łososiu', price:'36 zł'},
           {enName:'Sake Ikura', plName:'Sake Ikura', descEN:'salmon caviar wrapped in tuna', descPL:'ikura w tuńczyku', price:'42 zł'},
-          // ИСПРАВЛЕНО
           {enName:'Sashimi Mizu (9 pcs)', plName:'Sashimi Mizu (9 szt.)', descEN:'slices of raw fish — salmon, tuna, butterfish', descPL:'plastry surowych ryb — łosoś, tuńczyk, maślana', price:'95 zł'}
         ]
       }
@@ -354,9 +377,32 @@
 
     // Тексты для блока "Notice"
     const NOTICE_TEXTS = {
-        en: 'We kindly inform you that we add a waiter service of 10% to the final bill.',
+        // ОБНОВЛЕНИЕ: добавлено полное описание на английском (перевод с польского)
+        en: 'We kindly inform you that we add a waiter service of 10% to the final bill.<br><br>According to the recipe, items may contain: cucumber, oshinko, kampyo, avocado, mango, melon, lettuce, sesame, philadelphia cheese, mayonnaise, sauces, edible gold.',
         pl: 'Uprzejmie informujemy, że doliczamy serwis kelnerski w wysokości 10% do rachunku końcowego.<br><br>Zgodnie z recepturą mogą zawierać: ogórka, oshinko, kampyo, awokado, mango, melona, sałatę, sezam, serek philadelphia, majonez, sosy, złoto jadalne.'
     };
+    
+    // --- STICKY LOGIC ---
+    const stickyContainer = document.getElementById('sticky-container');
+    const wrap = document.querySelector('.wrap');
+
+    function checkStickyState() {
+        // stickyContainer.offsetTop - это позиция контейнера относительно его родителя (.wrap)
+        // wrap.scrollTop - это сколько прокручено внутри .wrap
+        if (wrap.scrollTop > 0) {
+            stickyContainer.classList.add('scrolled');
+        } else {
+            stickyContainer.classList.remove('scrolled');
+        }
+    }
+    
+    // Включаем прослушивание прокрутки на элементе wrap
+    wrap.addEventListener('scroll', checkStickyState);
+    // При первой загрузке тоже проверяем
+    window.addEventListener('load', checkStickyState);
+
+    // --- END STICKY LOGIC ---
+
 
     function createNav(){
       nav.innerHTML = '';
@@ -448,7 +494,7 @@
       document.getElementById('footer-left').textContent = 'Księstwo Sushi';
       document.getElementById('footer-right').textContent = (LANG==='en') ? 'Menu — web version' : 'Menu — wersja online';
       
-      // Обновление текста Notice
+      // Обновление текста Notice (включая перевод аллергенов)
       document.getElementById('notice-text').innerHTML = NOTICE_TEXTS[LANG];
 
       // update contact block (if you want different translations)
@@ -489,49 +535,4 @@
     function attachLightboxListeners() {
       // Небольшая задержка, чтобы элементы успели появиться в DOM
       setTimeout(() => { 
-        document.querySelectorAll('.js-lightbox-link').forEach(link => {
-          // Удаляем предыдущие обработчики (важно при смене языка)
-          link.onclick = null; 
-          
-          link.onclick = (e) => {
-            e.preventDefault(); // Останавливаем переход по ссылке
-            const imgPath = link.dataset.img;
-            // Открываем, только если это не заглушка
-            if (imgPath.indexOf('placeholder') === -1) {
-                openLightbox(imgPath);
-            }
-          };
-        });
-      }, 100); 
-    }
-    
-    // Переопределение функции renderMenu для добавления обработчиков после рендеринга
-    const tempRenderMenu = renderMenu;
-    renderMenu = function() {
-        tempRenderMenu(); // Вызываем оригинальную функцию рендеринга
-        attachLightboxListeners(); // Добавляем новые обработчики для лайтбокса
-    }
-
-    // --- КОНЕЦ ЛОГИКИ ЛАЙТБОКСА ---
-
-
-    // language buttons
-    langBtns.forEach(b=>{
-      b.addEventListener('click', ()=>{
-        langBtns.forEach(x=>x.classList.remove('active'));
-        b.classList.add('active');
-        LANG = b.dataset.lang;
-        createNav();
-        // Здесь вызывается новая renderMenu, которая вызывает attachLightboxListeners
-        renderMenu(); 
-        updateTexts();
-      });
-    });
-
-    // init
-    createNav();
-    renderMenu();
-    updateTexts();
-  </script>
-</body>
-</html>
+        document.querySelectorAll('.js-lig
