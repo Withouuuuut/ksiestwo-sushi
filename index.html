@@ -397,7 +397,7 @@
           {enName:'Goma Wakame', plName:'Goma Wakame', descEN:'wakame salad', descPL:'sałatka wakame', price:'20 zł'},
           {enName:'Ebiten (3 pcs)', plName:'Ebiten (3 szt.)', descEN:'shrimp tempura served with ponzu sauce', descPL:'krewetka tempura z sosem ponzu', price:'30 zł'},
           {enName:'Sake Tataki', plName:'Sake Tataki', descEN:'salmon tartare', descPL:'tatar z łososia', price:'50 zł'},
-          {enName:'Maguro Tataki', plName:'Maguro Tataki', descEN:'tuna tartare', descPL:'tatar z tuńczyka', price:'55 zł'}
+          {enName:'Maguro Tataki', plName:'Maguro Tataki', descEN:'tuna tartare', descPL:'tatar z tuńczyка', price:'55 zł'}
         ]
       },
       {
@@ -405,7 +405,7 @@
         title:{en:'Soups', pl:'Zupy'},
         introPhoto: 'images/soups_main_photo.jpg', 
         introDescEN: 'Traditional Japanese soups, including rich Ramen bowls with various fillings.',
-        introDescPL: 'Tradycyjne japońskie zupy, w tym bogate miski Ramenu z różnymi dodatkami.',
+        introDescPL: 'Tradycyjne japońskie zupy, w tym bogate miski Ramenu z różnymi dodatками.',
         items:[
           {enName:'Ramen Chicken', plName:'Ramen Chicken', descEN:'flavorful broth with vegetables, meat and ramen noodles', descPL:'bulion z warzywami, mięsem i makaronem ramen', price:'48 zł'},
           {enName:'Ramen Beef', plName:'Ramen Beef', descEN:'beef ramen', descPL:'ramen wołowy', price:'55 zł'}
@@ -415,7 +415,7 @@
       {
         id:'nigiri',
         title:{en:'Nigiri (2 pc)', pl:'Nigiri (2 szt.)'},
-        introPhoto: 'images/NIGIRI#1.jpg', 
+        introPhoto: 'images/NIGIRI#2.jpg', // <--- ИЗМЕНЕНИЕ ЗДЕСЬ
         introDescEN: 'Hand-pressed rice topped with fresh fish or seafood.',
         introDescPL: 'Ręcznie formowany ryż z plastrem świeżej ryby lub owoców morza.',
         items:[
@@ -494,7 +494,7 @@
     const menuArea = document.getElementById('menu-area');
     // Получаем кнопки из нового плавающего контейнера
     const langBtns = document.querySelectorAll('#lang-switch-fixed .lang-btn'); 
-    let LANG = 'pl'; // Установили начальный язык на Польский
+    let LANG = 'pl'; 
 
     function createNav(){
       nav.innerHTML = '';
