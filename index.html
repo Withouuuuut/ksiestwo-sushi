@@ -227,23 +227,43 @@
     /* -------------------------- */
     
     /* --- СТИЛИ ДЛЯ ВВОДНОЙ КАРТОЧКИ (ПРИМЕНЕНЫ КО ВСЕМ СЕКЦИЯМ) --- */
-    .intro-card {
-        padding: 0; /* Убираем внутренний паддинг, чтобы фото прилегало к краям */
+    /* Теперь это контейнер для всего содержимого секции */
+    .section {
+        padding: 0; 
         margin-bottom: 20px;
         background: transparent;
         border: none;
         box-shadow: none;
     }
+    /* Стили для заголовка, который теперь отдельно от карточки */
+    .section h2 {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 14px;
+        margin-bottom: 14px;
+        border: 1px solid rgba(0,0,0,0.03);
+    }
+    
+    .intro-card {
+        padding: 0; 
+        margin-bottom: 20px;
+        background: var(--card); /* Фон карточки */
+        border-radius: var(--radius);
+        border: 1px solid rgba(0,0,0,0.03);
+    }
     .intro-card img {
         display: block;
-        border-radius: var(--radius);
-        margin-bottom: 15px;
+        border-radius: var(--radius) var(--radius) 0 0; /* Скругление только сверху */
+        margin-bottom: 0;
         width: 100%;
         height: auto;
         cursor: pointer;
     }
     .intro-card p {
-        padding: 0 14px; /* Добавляем горизонтальный паддинг к тексту */
+        padding: 14px; /* Паддинг для текста */
+        margin: 0;
+        font-size: 14px;
+        color: var(--muted);
     }
     
     /* Стилизация стрелочки/кнопки для списка */
@@ -290,6 +310,7 @@
     details .items {
         padding-top: 10px;
         padding-bottom: 10px;
+        border-top: 1px solid rgba(0,0,0,0.05); /* Разделитель между summary и списком */
     }
 
   </style>
@@ -352,7 +373,7 @@
         title:{en:'Starters', pl:'Przystawki'},
         introPhoto: 'images/starters_main_photo.jpg', 
         introDescEN: 'A selection of light and fresh starters to begin your sushi experience.',
-        introDescPL: 'Легкие и свежие закуски, чтобы начать ваше знакомство с суши.',
+        introDescPL: 'Wybór lekkich i świeżych przystawek na rozpoczęcie przygody z sushi.',
         items:[
           {enName:'Goma Wakame', plName:'Goma Wakame', descEN:'wakame salad', descPL:'sałatka wakame', price:'20 zł'},
           {enName:'Ebiten (3 pcs)', plName:'Ebiten (3 szt.)', descEN:'shrimp tempura served with ponzu sauce', descPL:'krewetka tempura z sosem ponzu', price:'30 zł'},
@@ -365,9 +386,9 @@
         title:{en:'Soups', pl:'Zupy'},
         introPhoto: 'images/soups_main_photo.jpg', 
         introDescEN: 'Traditional Japanese soups, including rich Ramen bowls with various fillings.',
-        introDescPL: 'Традиционные японские супы, включая наваристые рамэны с различными наполнителями.',
+        introDescPL: 'Tradycyjne japońskie zupy, w tym bogate miski Ramenu z różnymi dodatkami.',
         items:[
-          {enName:'Ramen Chicken', plName:'Ramen Chicken', descEN:'flavorful broth with vegetables, meat and ramen noodles', descPL:'bulion z warzywami, mięсом i makaronem ramen', price:'48 zł'},
+          {enName:'Ramen Chicken', plName:'Ramen Chicken', descEN:'flavorful broth with vegetables, meat and ramen noodles', descPL:'bulion z warzywami, mięsem i makaronem ramen', price:'48 zł'},
           {enName:'Ramen Beef', plName:'Ramen Beef', descEN:'beef ramen', descPL:'ramen wołowy', price:'55 zł'}
         ]
       },
@@ -376,7 +397,7 @@
         title:{en:'Sushi — Nigiri / Futomaki', pl:'Sushi — Nigiri / Futomaki'},
         introPhoto: 'images/sushi_main_photo.jpg', 
         introDescEN: 'Classic Japanese sushi: Nigiri (rice with fish on top) and Futomaki (thick, traditional rolls).',
-        introDescPL: 'Классические японские суши: Нигири (рис с рыбой сверху) и Футомаки (толстые традиционные роллы).',
+        introDescPL: 'Klasyczne japońskie sushi: Nigiri (ryż z rybą na wierzchu) i Futomaki (grube, tradycyjne rolki).',
         items:[
           {enName:'Sake (Nigiri)', plName:'Sake (Nigiri)', descEN:'salmon — 2 pc', descPL:'łosoś — 2 szt.', price:'26 zł'},
           {enName:'Ohio (Nigiri)', plName:'Ohio (Nigiri)', descEN:'butterfish — 2 pc', descPL:'butterfish — 2 szt.', price:'25 zł'},
@@ -390,13 +411,15 @@
         title:{en:'Uramaki (8 pc)', pl:'Uramaki (8 szt.)'},
         introPhoto: 'images/uramaki_main_photo.jpg', 
         introDescEN: 'Uramaki, or inside-out rolls, characterized by rice on the outside and nori seaweed wrapped around the fillings. They offer complex textures and flavors.',
-        introDescPL: 'Урамаки, или "роллы рисом наружу", отличаются рисом снаружи и водорослями нори вокруг начинки. Они обладают сложной текстурой и вкусом.',
+        introDescPL: 'Uramaki, czyli rolki "ryżem na zewnątrz", charakteryzują się ryżem na zewnątrz i wodorostami nori wokół nadzienia. Oferują złożone tekstury i smaki.',
         items:[
           {enName:'Sake Philadelphia', plName:'Sake Philadelphia', descEN:'salmon with philadelphia cream cheese', descPL:'łosoś z serkiem philadelphia', price:'38 zł'},
+          // >>>>>>>>>>> Обновленное фото для Awokado Sake <<<<<<<<<<
           {enName:'Awokado Sake', plName:'Awokado Sake', descEN:'salmon wrapped in avocado', descPL:'łosoś w awokado', price:'42 zł', imgFile:'SUSHI KSIESTWO SOCIAL MEDIA V2-94.jpg'},
           {enName:'Mango Sake', plName:'Mango Sake', descEN:'salmon wrapped in mango', descPL:'łosoś w mango', price:'42 zł'},
           {enName:'Maguro Orange Pepper', plName:'Maguro Orange Pepper', descEN:'tuna with chopped leek and orange pepper', descPL:'tuńczyk z porem i pomarańczowym pieprzem', price:'45 zł'},
           {enName:'Ebi Ten Mamemori', plName:'Ebi Ten Mamemori', descEN:'shrimp tempura wrapped in soy paper', descPL:'krewetka tempura w sojowym papierze', price:'42 zł'},
+          // >>>>>>>>>>> Обновленное фото для Gold California <<<<<<<<<<
           {enName:'Gold California', plName:'Gold California', descEN:'surimi wrapped in salmon', descPL:'surimi owinięte łososiem', price:'40 zł', imgFile:'IMG-20251014-WA0000.jpg'},
           {enName:'Rainbow', plName:'Rainbow', descEN:'assorted', descPL:'asortyмент', price:'48 zł'}
         ]
@@ -406,7 +429,7 @@
         title:{en:'Uramaki w Tempurze', pl:'Uramaki w tempurze'},
         introPhoto: 'images/tempura_main_photo.jpg', 
         introDescEN: 'Warm, crispy Uramaki rolls deep-fried in tempura batter for a delightful crunch.',
-        introDescPL: 'Теплые, хрустящие роллы Урамаки, обжаренные в темпурном кляре до золотистой корочки.',
+        introDescPL: 'Ciepłe, chrupiące rolki Uramaki smażone w cieście tempura, dla uzyskania cudownej chrupkości.',
         items:[
           {enName:'Tempura Sake', plName:'Tempura Sake', descEN:'salmon', descPL:'łosoś', price:'—'},
           {enName:'Tempura Ohio', plName:'Tempura Ohio', descEN:'butterfish', descPL:'butterfish', price:'—'},
@@ -418,7 +441,7 @@
         title:{en:'Oyakomaki / Sashimi', pl:'Oyakomaki / Sashimi'},
         introPhoto: 'images/special_main_photo.jpg', 
         introDescEN: 'Specialities: Oyakomaki (wrapped delicacies) and Sashimi (thin slices of raw fish without rice).',
-        introDescPL: 'Фирменные блюда: Оякомаки (завернутые деликатесы) и Сашими (тонкие ломтики сырой рыбы без риса).',
+        introDescPL: 'Specjalności: Oyakomaki (zawijane delikatesy) i Sashimi (cienkie plastry surowej ryby bez ryżu).',
         items:[
           {enName:'Sake Ebi Tataki (2 pcs)', plName:'Sake Ebi Tataki (2 szt.)', descEN:'chopped shrimp wrapped in salmon', descPL:'posiekana krewetka w łososiu', price:'36 zł'},
           {enName:'Sake Ikura', plName:'Sake Ikura', descEN:'salmon caviar wrapped in tuna', descPL:'ikura w tuńczyku', price:'42 zł'},
@@ -449,10 +472,12 @@
       menuArea.innerHTML = '';
       MENU.forEach(sec=>{
         const s = document.createElement('section');
-        s.className='section';
         s.id = sec.id;
+        // Удаляем s.className='section' чтобы стилизовать h2 отдельно
+
         const h2 = document.createElement('h2');
         h2.textContent = sec.title[LANG];
+        h2.className = 'section'; // Применяем стили секции к заголовку
         s.appendChild(h2);
 
         // 1. Создание карточки с общим фото и описанием
@@ -477,7 +502,9 @@
             details.open = false; 
             
             const summary = document.createElement('summary');
-            summary.innerHTML = '<span class="summary-text">' + (LANG === 'en' ? 'View available items' : 'Посмотреть список позиций') + '</span>';
+            // >>>>>>>>>>> ИСПРАВЛЕНИЕ: ПЕРЕВОД НА ПОЛЬСКИЙ <<<<<<<<<<
+            const viewText = (LANG === 'en' ? 'View available items' : 'Pokaż dostępne pozycje');
+            summary.innerHTML = '<span class="summary-text">' + viewText + '</span>';
             details.appendChild(summary);
 
             const container = document.createElement('div');
@@ -556,6 +583,12 @@
       contacts.innerHTML = (LANG==='en')
         ? '📞 +48 123 456 789<br>📸 @ksiestwosushi<br>📍 ul. Example 12, Warsaw'
         : '📞 +48 123 456 789<br>📸 @ksiestwosushi<br>📍 ul. Example 12, Warszawa';
+      
+      // Обновляем текст в aside.right
+      const notice = document.querySelector('.right .section:nth-child(2) .small');
+      notice.textContent = (LANG==='en') 
+        ? 'We kindly inform you that we add a waiter service of 10% to the final bill.' 
+        : 'Uprzejmie informujemy, że do rachunku końcowego doliczamy opłatę za obsługę kelnerską w wysokości 10%.';
     }
 
 
