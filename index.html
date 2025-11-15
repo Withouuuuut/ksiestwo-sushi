@@ -129,7 +129,8 @@
     .items{
       display:grid;
       gap:10px;
-      /* По умолчанию 1 колонка на мобильных */
+      /* Возвращаем список к одной колонке для всех */
+      grid-template-columns: 1fr;
     }
 
     .item{
@@ -152,32 +153,31 @@
       color:var(--muted);
       font-size:12px;
     }
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
     .meta{flex:1}
     .name{font-weight:700;margin-bottom:6px}
     .desc{font-size:13px;color:var(--muted);margin-bottom:6px}
     .price{font-weight:800;color:var(--accent)}
 
-    /* --- СПЕЦИАЛЬНЫЙ СТИЛЬ ДЛЯ NIGIRI (ТРИПЛ-ФОТО) --- */
-    #nigiri .items {
-        grid-template-columns: repeat(1, 1fr); /* 1 колонка на мобильных */
-        gap: 15px; 
-    }
-    /* Для Nigiri на широких экранах делаем 3 колонки (визуально как треугольник) */
+    /* Сбрасываем все специальные стили, которые были для Nigiri */
     @media (min-width: 768px) {
-        #nigiri .items {
-            grid-template-columns: repeat(3, 1fr); 
-            text-align: center; /* Центруем текст под фото */
+        .items {
+            grid-template-columns: 1fr; 
+            text-align: left; 
         }
-        #nigiri .item {
-            flex-direction: column; /* Располагаем фото и текст вертикально */
-            padding: 0; 
+        .item {
+            flex-direction: row; 
+            padding: 8px; 
         }
-        #nigiri .thumb {
-            width: 100%;
-            height: 120px; /* Увеличиваем высоту фото */
+        .thumb {
+            width: 88px;
+            height: 62px; 
         }
     }
-    /* ---------------------------------------------------- */
 
 
     footer{
@@ -195,13 +195,6 @@
     @media (max-width:900px){
       .content{flex-direction:column-reverse}
       .right{width:100%}
-    }
-    
-    /* Устанавливаем 1 колонку для всех остальных секций на широких экранах (возврат к виду списка) */
-    @media (min-width: 901px) {
-      #futomaki .items, #uramaki .items, #uramaki-temp .items, #oyakomaki .items, #sashimi .items {
-        grid-template-columns: 1fr; /* По одной позиции в ряд для всех, кроме Nigiri */
-      }
     }
   </style>
 </head>
@@ -254,31 +247,51 @@
   <script>
     // DATA: menu items with EN and PL text and prices (zł)
     const MENU = [
-      // 1. Nigiri (отдельный раздел с 3 фото)
+      // 1. STARTERS
+      {
+        id:'starters',
+        title:{en:'Starters', pl:'Przystawki'},
+        items:[
+          {enName:'Goma Wakame', plName:'Goma Wakame', descEN:'wakame salad', descPL:'sałatka wakame', price:'20 zł', imgFile: 'STARTER_GOMA.jpg'},
+          {enName:'Ebiten (3 pcs)', plName:'Ebiten (3 szt.)', descEN:'shrimp tempura served with ponzu sauce', descPL:'krewetka tempura z sosem ponzu', price:'30 zł', imgFile: 'STARTER_EBITEN.jpg'},
+          {enName:'Sake Tataki', plName:'Sake Tataki', descEN:'salmon tartare', descPL:'tatar z łososia', price:'50 zł'},
+          {enName:'Maguro Tataki', plName:'Maguro Tataki', descEN:'tuna tartare', descPL:'tatar z tuńczyka', price:'55 zł'}
+        ]
+      },
+      // 2. SOUPS
+      {
+        id:'soups',
+        title:{en:'Soups', pl:'Zupy'},
+        items:[
+          {enName:'Ramen Chicken', plName:'Ramen Chicken', descEN:'flavorful broth with vegetables, meat and ramen noodles', descPL:'bulion z warzywami, mięsem i makaronem ramen', price:'48 zł', imgFile: 'RAMEN.jpg'},
+          {enName:'Ramen Beef', plName:'Ramen Beef', descEN:'beef ramen', descPL:'ramen wołowy', price:'55 zł'}
+        ]
+      },
+      // 3. Nigiri 
       {
         id:'nigiri',
         title:{en:'Nigiri', pl:'Nigiri'},
         items:[
-          {enName:'Sake', plName:'Sake', descEN:'salmon — 2 pc', descPL:'łosoś — 2 szt.', price:'26 zł', imgFile: 'NIGIRI#1.jpg'}, // <-- Файл фото
-          {enName:'Ohio', plName:'Ohio', descEN:'butterfish — 2 pc', descPL:'butterfish — 2 szt.', price:'25 zł', imgFile: 'NIGIRI#2.jpg'}, // <-- Файл фото
-          {enName:'Maguro', plName:'Maguro', descEN:'tuna — 2 pc', descPL:'tuńczyk — 2 szt.', price:'30 zł', imgFile: 'MAGURO.jpg'} // <-- Файл фото
+          {enName:'Sake', plName:'Sake', descEN:'salmon — 2 pc', descPL:'łosoś — 2 szt.', price:'26 zł', imgFile: 'NIGIRI#1.jpg'}, 
+          {enName:'Ohio', plName:'Ohio', descEN:'butterfish — 2 pc', descPL:'butterfish — 2 szt.', price:'25 zł', imgFile: 'NIGIRI#2.jpg'}, 
+          {enName:'Maguro', plName:'Maguro', descEN:'tuna — 2 pc', descPL:'tuńczyk — 2 szt.', price:'30 zł', imgFile: 'MAGURO.jpg'} 
         ]
       },
-      // 2. Futomaki (отдельный раздел)
+      // 4. Futomaki 
       {
         id:'futomaki',
         title:{en:'Futomaki', pl:'Futomaki'},
         items:[
-          {enName:'Sake Philadelphia', plName:'Sake Philadelphia', descEN:'salmon with philadelphia cream cheese', descPL:'łosoś z serkiem philadelphia', price:'38 zł', imgFile: 'FUTOMAKI.jpg'}, // <-- Файл фото
+          {enName:'Sake Philadelphia', plName:'Sake Philadelphia', descEN:'salmon with philadelphia cream cheese', descPL:'łosoś z serkiem philadelphia', price:'38 zł', imgFile: 'FUTOMAKI.jpg'}, 
           {enName:'Maguro Negi Togarashi', plName:'Maguro Negi Togarashi', descEN:'tuna with spicy leek', descPL:'tuńczyk z ostrą dymką', price:'42 zł'}
         ]
       },
-      // 3. Uramaki 
+      // 5. Uramaki 
       {
         id:'uramaki',
         title:{en:'Uramaki (8 pc)', pl:'Uramaki (8 szt.)'},
         items:[
-          {enName:'Sake Philadelphia', plName:'Sake Philadelphia', descEN:'salmon with philadelphia cream cheese', descPL:'łosoś z serkiem philadelphia', price:'38 zł', imgFile: 'URAMAKi.jpg'}, // <-- Файл фото
+          {enName:'Sake Philadelphia', plName:'Sake Philadelphia', descEN:'salmon with philadelphia cream cheese', descPL:'łosoś z serkiem philadelphia', price:'38 zł', imgFile: 'URAMAKi.jpg'}, 
           {enName:'Awokado Sake', plName:'Awokado Sake', descEN:'salmon wrapped in avocado', descPL:'łosoś w awokado', price:'42 zł'},
           {enName:'Mango Sake', plName:'Mango Sake', descEN:'salmon wrapped in mango', descPL:'łosoсь w mango', price:'42 zł'},
           {enName:'Maguro Orange Pepper', plName:'Maguro Orange Pepper', descEN:'tuna with chopped leek and orange pepper', descPL:'tuńczyk з porem i pomarańczowym pieprzem', price:'45 zł'},
@@ -287,7 +300,7 @@
           {enName:'Rainbow', plName:'Rainbow', descEN:'assorted', descPL:'asortyмент', price:'48 zł'}
         ]
       },
-      // 4. Uramaki w Tempurze
+      // 6. Uramaki w Tempurze
       {
         id:'uramaki-temp',
         title:{en:'Uramaki w Tempurze', pl:'Uramaki w tempurze'},
@@ -297,16 +310,16 @@
           {enName:'Tempura Maguro', plName:'Tempura Maguro', descEN:'tuna', descPL:'tuńczyk', price:'—'}
         ]
       },
-      // 5. Oyakomaki 
+      // 7. Oyakomaki
       {
         id:'oyakomaki',
         title:{en:'Oyakomaki', pl:'Oyakomaki'},
         items:[
-          {enName:'Sake Ebi Tataki (2 pcs)', plName:'Sake Ebi Tataki (2 szt.)', descEN:'chopped shrimp wrapped in salmon', descPL:'posiekana krewetka w łososiu', price:'36 zł', imgFile: 'Oyakomaki.jpg'}, // <-- Файл фото
+          {enName:'Sake Ebi Tataki (2 pcs)', plName:'Sake Ebi Tataki (2 szt.)', descEN:'chopped shrimp wrapped in salmon', descPL:'posiekana krewetka w łososiu', price:'36 zł', imgFile: 'Oyakomaki.jpg'}, 
           {enName:'Sake Ikura', plName:'Sake Ikura', descEN:'salmon caviar wrapped in tuna', descPL:'ikura w tuńczyku', price:'42 zł'}
         ]
       },
-      // 6. Sashimi 
+      // 8. Sashimi
       {
         id:'sashimi',
         title:{en:'Sashimi', pl:'Sashimi'},
