@@ -284,6 +284,18 @@
         color: var(--muted);
     }
     
+    /* Добавляем класс для специального текста, который должен быть мелким и серым */
+    .intro-card p.small-note {
+      font-size: 12px; 
+      color: var(--muted);
+      border-top: 1px solid rgba(0,0,0,0.05);
+      padding: 10px 14px 14px; 
+      margin-top: 10px;
+      background: #fdfdfd; 
+      border-radius: 0 0 var(--radius) var(--radius); 
+      line-height: 1.3;
+    }
+
     /* Стилизация стрелочки/кнопки для списка */
     details {
         background: var(--card);
@@ -403,9 +415,12 @@
       {
         id:'soups',
         title:{en:'Soups', pl:'Zupy'},
-        introPhoto: 'images/soups_main_photo.jpg', 
+        introPhoto: 'images/RAMEN ZUPA.jpg', // <--- НОВОЕ ФОТО
         introDescEN: 'Traditional Japanese soups, including rich Ramen bowls with various fillings.',
-        introDescPL: 'Tradycyjne japońskie zupy, w tym bogate miski Ramenu z różnymi додатками.',
+        introDescPL: 'Tradycyjne japońskie zupy, w tym bogate miski Ramenu z różnymi dodatkami.',
+        // Новый, ненавязчивый текст, который будет отображаться под основным описанием
+        smallNoteEN: 'Note: Ramen portion is 800ml, best for sharing (2 people).',
+        smallNotePL: 'Uwaga: Porcja Ramenu to 800ml, polecamy do podziału (dla 2 osób).',
         items:[
           {enName:'Ramen Chicken', plName:'Ramen Chicken', descEN:'flavorful broth with vegetables, meat and ramen noodles', descPL:'bulion z warzywami, mięsem i makaronem ramen', price:'48 zł'},
           {enName:'Ramen Beef', plName:'Ramen Beef', descEN:'beef ramen', descPL:'ramen wołowy', price:'55 zł'}
@@ -415,7 +430,7 @@
       {
         id:'nigiri',
         title:{en:'Nigiri (2 pc)', pl:'Nigiri (2 szt.)'},
-        introPhoto: 'images/NIGIRI#1.jpg', // <--- ВОЗВРАЩЕН ФАЙЛ NIGIRI#1.jpg
+        introPhoto: 'images/NIGIRI#1.jpg', // Возвращено на NIGIRI#1.jpg
         introDescEN: 'Hand-pressed rice topped with fresh fish or seafood.',
         introDescPL: 'Ręcznie formowany ryż z plastrem świeżej ryby lub owoców morza.',
         items:[
@@ -449,7 +464,7 @@
           {enName:'Maguro Orange Pepper', plName:'Maguro Orange Pepper', descEN:'tuna with chopped leek and orange pepper', descPL:'tuńczyk z porem i pomarańczowym pieprzem', price:'45 zł'},
           {enName:'Ebi Ten Mamemori', plName:'Ebi Ten Mamemori', descEN:'shrimp tempura wrapped in soy paper', descPL:'krewetka tempura w sojowym papierze', price:'42 zł'},
           {enName:'Gold California', plName:'Gold California', descEN:'surimi wrapped in salmon', descPL:'surimi owinięte łososiem', price:'40 zł'},
-          {enName:'Rainbow', plName:'Rainbow', descEN:'assorted', descPL:'asortyment', price:'48 zł'}
+          {enName:'Rainbow', plName:'Rainbow', descEN:'assorted', descPL:'asortyмент', price:'48 zł'}
         ]
       },
       {
@@ -530,11 +545,21 @@
             img.alt = sec.title[LANG];
             img.onclick = () => { openLightbox(sec.introPhoto); }; 
             
+            // Основное описание
             const p = document.createElement('p');
             p.textContent = (LANG === 'en' ? sec.introDescEN : sec.introDescPL);
             
             introCard.appendChild(img);
             introCard.appendChild(p);
+            
+            // Дополнительное маленькое примечание (для рамена)
+            if (sec.smallNoteEN && sec.smallNotePL) {
+                const smallNote = document.createElement('p');
+                smallNote.className = 'small-note'; // Использование нового класса для стилизации
+                smallNote.textContent = (LANG === 'en' ? sec.smallNoteEN : sec.smallNotePL);
+                introCard.appendChild(smallNote);
+            }
+
             s.appendChild(introCard); 
 
             // 2. Создание раскрывающегося блока <details>
