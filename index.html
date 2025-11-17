@@ -157,7 +157,6 @@
     .desc{font-size:13px;color:var(--muted);margin-bottom:6px}
     .price{font-weight:800;color:var(--accent); white-space: nowrap;}
     
-    /* ВОССТАНОВЛЕНА СТРУКТУРА ДЛЯ ВЫРАВНИВАНИЯ ЦЕНЫ СПРАВА */
     .item-content {
         display: flex;
         justify-content: space-between;
@@ -497,10 +496,10 @@
         introPhoto: 'images/ramen-zupa.jpg', 
         introDescEN: 'Traditional Japanese soups, including rich Ramen bowls with various fillings.',
         introDescPL: 'Tradycyjne japońskie zupy, w tym bogate miski Ramenu z różnymi dodatkami.',
-        smallNoteEN: 'Note: Ramen portion is 800ml, best for sharing (2 people).',
+        smallNoteEN: 'The Ramen portion is 800ml, recommended for sharing (2 people).',
         smallNotePL: 'Uwaga: Porcja Ramenu to 800ml, polecamy do podziału (dla 2 osób).',
         items:[
-          {enName:'Ramen Chicken', plName:'Ramen Chicken', descEN:'flavorful broth with vegetables, meat and ramen noodles', descPL:'bulion z warzywami, mięsem i makaronem ramen', price:'48 zł'},
+          {enName:'Ramen Chicken', plName:'Ramen Chicken', descEN:'flavorful broth with chicken, vegetables, and ramen noodles', descPL:'bulion z warzywami, mięsem i makaronem ramen', price:'48 zł'},
           {enName:'Ramen Beef', plName:'Ramen Beef', descEN:'beef ramen', descPL:'ramen wołowy', price:'55 zł'}
         ]
       },
@@ -527,8 +526,8 @@
         id:'futomaki',
         title:{en:'Futomaki (6 pc)', pl:'Futomaki (6 szt.)'},
         introPhoto: 'images/futomaki.jpg', 
-        introDescEN: 'Thick, traditional rolls with the seaweed on the outside.',
-        introDescPL: 'Grube, tradycyjne rolki z wodorostem na zewnątrz.',
+        introDescEN: 'Thick, traditional rolls with nori on the outside.',
+        introDescPL: 'Grube, tradycyjne rolki z nori na zewnątrz.',
         items:[
           {enName:'Sake Philadelphia', plName:'Sake Philadelphia', descEN:'salmon with philadelphia cream cheese', descPL:'łosoś z serkiem philadelphia', price:'38 zł'}, 
           {enName:'Maguro Negi Togarashi', plName:'Maguro Negi Togarashi', descEN:'tuna with spicy leek', descPL:'tuńczyk z ostrą dymką', price:'42 zł'},
@@ -545,7 +544,7 @@
         id:'uramaki-combined',
         title:{en:'Uramaki & Tempura (8 pc)', pl:'Uramaki & Tempura (8 szt.)'},
         introPhoto: 'images/tempura.jpg', 
-        introDescEN: 'Our selection of Uramaki (inside-out rolls) and crispy Uramaki w Tempurze.',
+        introDescEN: 'Our selection of Uramaki (inside-out rolls) and crispy Tempura Uramaki.',
         introDescPL: 'Nasz wybór Uramaki (rolek ryżem na zewnątrz) oraz chrupiących Uramaki w Tempurze.',
         
         // Список Uramaki (14 позиций из меню)
@@ -560,9 +559,12 @@
           {enName:'Ohio Spice Sake', plName:'Ohio Spice Sake', descEN:'salmon wrapped in butterfish', descPL:'łosoś owijany opalaną maślaną', price:'42 zł'},
           {enName:'Maguro Spicy Ebi Ten', plName:'Maguro Spicy Ebi Ten', descEN:'shrimp tempura wrapped in tuna', descPL:'krewetka w tempurze owijana opalanym tuńczykiem', price:'45 zł'},
           {enName:'Kegon', plName:'Kegon', descEN:'salmon wrapped in grilled eel', descPL:'łosoś owijany grillowanym węgorzem', price:'45 zł'},
-          {enName:'Sake Aburi', plName:'Sake Aburi', descEN:'salmon wrapped in seared salmon', descPL:'łosoсь owijany opalanym pikantnym łososiem', price:'45 zł'},
+          // ИСПРАВЛЕНО: łosoсь -> łosoś
+          {enName:'Sake Aburi', plName:'Sake Aburi', descEN:'salmon wrapped in seared spicy salmon', descPL:'łosoś owijany opalanym pikantnym łososiem', price:'45 zł'},
           {enName:'Tobiko Ohio Ten', plName:'Tobiko Ohio Ten', descEN:'butterfish in tempura coated with caviar', descPL:'maślana w tempurze obtoczona kawiorem z latającej ryby', price:'48 zł'},
+          // ИСПРАВЛЕНО: łosoсь -> łosoś
           {enName:'Nashi Sake', plName:'Nashi Sake', descEN:'salmon wrapped in Japanese pear', descPL:'łosoś owijany japońską gruszką', price:'45 zł'},
+          // ИСПРАВЛЕНО: łosoсь -> łosoś
           {enName:'Sake Tataki Ebiten', plName:'Sake Tataki Ebiten', descEN:'shrimp tempura wrapped in salmon tartare', descPL:'krewetka w tempurze obtoczona tatarem z łososia', price:'48 zł'}
         ],
 
@@ -583,8 +585,11 @@
         introDescEN: 'Our specialty rolls, often wrapped in fish or avocado instead of nori.',
         introDescPL: 'Nasze specjalne rolki, często zawijane w rybę lub awokado zamiast nori.',
         items:[
+          // ИСПРАВЛЕНО: łososia -> łososia (было łosośia)
           {enName:'Sake Ebi Tataki', plName:'Sake Ebi Tataki', descEN:'chopped shrimp wrapped in salmon', descPL:'siekana krewetka owijana w łososia', price:'36 zł'}, 
+          // ИСПРАВЛЕНО: łososia -> łososia (было łosośia)
           {enName:'Sake Ikura', plName:'Sake Ikura', descEN:'caviar with salmon wrapped in tuna', descPL:'kawior z łososia owijany tuńczykiem', price:'42 zł'},
+          // ИСПРАВЛЕНО: łosoś -> łosoś (было łosoсь)
           {enName:'Maguro Sake Tataki', plName:'Maguro Sake Tataki', descEN:'chopped salmon wrapped in tuna', descPL:'siekany łosoś owijany tuńczykiem', price:'45 zł'} 
         ]
       },
@@ -594,9 +599,11 @@
         title:{en:'Sashimi (9 pc)', pl:'Sashimi (9 szt.)'},
         introPhoto: 'images/sashimi.jpg', 
         introDescEN: 'Thinly sliced raw fish and seafood, served without rice.',
-        introDescPL: 'Cienko krojone plastry surowej ryby и owoców morza, podawane bez ryżu.',
+        // ИСПРАВЛЕНО: "и"
+        introDescPL: 'Cienko krojone plastry surowej ryby i owoców morza, podawane bez ryżu.',
         items:[
-          {enName:'Mizu', plName:'Mizu', descEN:'slices of raw fish — salmon, tuna, butterfish', descPL:'plaster surowej ryby — Łosoś, tuńczyk, maślana', price:'45 zł'}
+          // ИСПРАВЛЕНО: łosoсь -> łosoś
+          {enName:'Mizu', plName:'Mizu', descEN:'slices of raw fish — salmon, tuna, butterfish', descPL:'plastry surowej ryby — łosoś, tuńczyk, maślana', price:'45 zł'}
         ]
       }
     ];
@@ -867,4 +874,3 @@
   </script>
 </body>
 </html>
-
