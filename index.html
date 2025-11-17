@@ -278,6 +278,7 @@
         background: var(--card); 
         border-radius: var(--radius);
         border: 1px solid rgba(0,0,0,0.03);
+        overflow: hidden; /* Важно для слайдера */
     }
     .intro-card img {
         display: block;
@@ -391,6 +392,96 @@
     }
     /* ------------------------------------------- */
 
+
+    /* --- СТИЛИ ДЛЯ СЛАЙДЕРА (carousel) --- */
+    .slider-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .slider-track {
+        display: flex;
+        transition: transform 0.3s ease-in-out;
+    }
+    .slider-slide {
+        min-width: 100%;
+        position: relative;
+    }
+    .slider-slide img {
+        width: 100%;
+        display: block;
+        cursor: pointer;
+        /* Убираем border-radius, который задан для .intro-card img, так как он теперь на контейнере слайдера */
+        border-radius: 0; 
+    }
+    /* Заголовок слайда */
+    .slide-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 8px 14px;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+        pointer-events: none; 
+    }
+
+    /* Кнопки навигации */
+    .slider-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.4);
+        color: white;
+        border: none;
+        padding: 10px 12px;
+        cursor: pointer;
+        z-index: 10;
+        font-size: 20px;
+        line-height: 1;
+        transition: background 0.2s;
+    }
+    .slider-nav-btn:hover {
+        background: rgba(0, 0, 0, 0.7);
+    }
+    .slider-nav-left {
+        left: 0;
+        border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .slider-nav-right {
+        right: 0;
+        border-radius: var(--radius) 0 0 var(--radius);
+    }
+    /* Индикаторы слайдов (точки) */
+    .slider-dots {
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 6px;
+        z-index: 10;
+        padding: 5px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 999px;
+    }
+    .dot {
+        width: 8px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .dot.active {
+        background: var(--accent);
+    }
+    /* -------------------------------------- */
+
   </style>
 </head>
 <body>
@@ -450,9 +541,16 @@
       {
         id:'starters',
         title:{en:'Starters', pl:'Przystawki'},
-        introPhoto: 'images/starters_main_photo.jpg', 
+        // *** ИЗМЕНЕНИЕ: ВМЕСТО introPhoto ИСПОЛЬЗУЕМ sliderPhotos ***
         introDescEN: 'A selection of light and fresh starters to begin your sushi experience.',
         introDescPL: 'Wybór lekkich i świeżych przystawek na rozpoczęcie przygody z sushi.',
+        sliderPhotos: [
+            {src: 'images/VAKAME.jpg', nameEN: 'Goma Wakame', namePL: 'Goma Wakame'},
+            {src: 'images/EBITEN.jpg', nameEN: 'Ebiten (3 pcs)', namePL: 'Ebiten (3 szt.)'},
+            {src: 'images/TARTAR_LOSOS.jpg', nameEN: 'Sake Tataki', namePL: 'Sake Tataki'},
+            // Maguro Tataki можно добавить, если будет фото
+        ],
+        // ***************************************************************
         items:[
           {enName:'Goma Wakame', plName:'Goma Wakame', descEN:'wakame salad', descPL:'sałatka wakame', price:'20 zł'},
           {enName:'Ebiten (3 pcs)', plName:'Ebiten (3 szt.)', descEN:'shrimp tempura served with ponzu sauce', descPL:'krewetka tempura z sosem ponzu', price:'30 zł'},
@@ -513,7 +611,7 @@
       {
         id:'uramaki-combined',
         title:{en:'Uramaki & Tempura (8 pc)', pl:'Uramaki & Tempura (8 szt.)'},
-        introPhoto: 'images/tempura.jpg', // <--- НОВОЕ ГЛАВНОЕ ФОТО
+        introPhoto: 'images/tempura.jpg', 
         introDescEN: 'Our selection of Uramaki (inside-out rolls) and crispy Uramaki w Tempurze.',
         introDescPL: 'Nasz wybór Uramaki (rolek ryżem na zewnątrz) oraz chrupiących Uramaki w Tempurze.',
         
@@ -554,20 +652,18 @@
         items:[
           {enName:'Sake Ebi Tataki', plName:'Sake Ebi Tataki', descEN:'chopped shrimp wrapped in salmon', descPL:'siekana krewetka owijana w łososia', price:'36 zł'}, 
           {enName:'Sake Ikura', plName:'Sake Ikura', descEN:'caviar with salmon wrapped in tuna', descPL:'kawior z łososia owijany tuńczykiem', price:'42 zł'},
-          {enName:'Maguro Sake Tataki', plName:'Maguro Sake Tataki', descEN:'chopped salmon wrapped in tuna', descPL:'siekany łosoś owijany tuńczykiem', price:'45 zł'} // Добавлено из нового меню
+          {enName:'Maguro Sake Tataki', plName:'Maguro Sake Tataki', descEN:'chopped salmon wrapped in tuna', descPL:'siekany łosoś owijany tuńczykiem', price:'45 zł'} 
         ]
       },
       // --- РАЗДЕЛ SASHIMI (ОТДЕЛЬНО) ---
       {
         id:'sashimi',
         title:{en:'Sashimi (9 pc)', pl:'Sashimi (9 szt.)'},
-        // *** ИЗМЕНЕНИЕ: Путь к фото обновлен на SASHIMI.jpg ***
         introPhoto: 'images/SASHIMI.jpg', 
-        // ********************************************************
         introDescEN: 'Thinly sliced raw fish and seafood, served without rice.',
         introDescPL: 'Cienko krojone plastry surowej ryby i owoców morza, podawane bez ryżu.',
         items:[
-          {enName:'Mizu', plName:'Mizu', descEN:'slices of raw fish — salmon, tuna, butterfish', descPL:'plaster surowej ryby — łosoś, tuńczyk, maślana', price:'45 zł'}
+          {enName:'Mizu', plName:'Mizu', descEN:'slices of raw fish — salmon, tuna, butterfish', descPL:'plaster surowej ryby — łosoсь, tuńczyk, maślana', price:'45 zł'}
         ]
       }
     ];
@@ -578,6 +674,119 @@
     // Получаем кнопки из нового плавающего контейнера
     const langBtns = document.querySelectorAll('#lang-switch-fixed .lang-btn'); 
     let LANG = 'pl'; 
+
+    // SLIDER LOGIC - Хранение текущего индекса слайда для каждой секции
+    const currentSlideMap = {}; 
+
+    function updateSlide(sectionId, newIndex) {
+        const section = document.getElementById(sectionId);
+        if (!section) return;
+
+        const track = section.querySelector('.slider-track');
+        const slides = section.querySelectorAll('.slider-slide');
+        const dots = section.querySelectorAll('.dot');
+        const totalSlides = slides.length;
+
+        if (totalSlides === 0) return;
+
+        let index = newIndex;
+        // Logic for infinite loop (wrap around)
+        if (index >= totalSlides) {
+            index = 0; 
+        } else if (index < 0) {
+            index = totalSlides - 1; 
+        }
+
+        currentSlideMap[sectionId] = index;
+
+        // Move the track
+        const offset = -index * 100;
+        track.style.transform = `translateX(${offset}%)`;
+
+        // Update dots
+        dots.forEach((dot, i) => {
+            dot.classList.remove('active');
+            if (i === index) {
+                dot.classList.add('active');
+            }
+        });
+    }
+
+    function createSliderStructure(sec) {
+        const sliderContainer = document.createElement('div');
+        sliderContainer.className = 'slider-container';
+
+        const track = document.createElement('div');
+        track.className = 'slider-track';
+
+        sec.sliderPhotos.forEach((photo, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'slider-slide';
+
+            const img = document.createElement('img');
+            img.src = photo.src;
+            img.alt = photo.namePL;
+            // При клике открываем лайтбокс
+            img.onclick = () => { openLightbox(photo.src); };
+            
+            // Caption (название блюда)
+            const caption = document.createElement('div');
+            caption.className = 'slide-caption';
+            caption.textContent = (LANG === 'en' ? photo.nameEN : photo.namePL);
+
+            slide.appendChild(img);
+            slide.appendChild(caption);
+            track.appendChild(slide);
+        });
+
+        // Navigation Buttons (Left/Right)
+        const navLeft = document.createElement('button');
+        navLeft.className = 'slider-nav-btn slider-nav-left';
+        navLeft.innerHTML = '&#9664;'; // Стрелка влево
+        navLeft.onclick = () => {
+            const currentIndex = currentSlideMap[sec.id] || 0;
+            updateSlide(sec.id, currentIndex - 1);
+        };
+        
+        const navRight = document.createElement('button');
+        navRight.className = 'slider-nav-btn slider-nav-right';
+        navRight.innerHTML = '&#9654;'; // Стрелка вправо
+        navRight.onclick = () => {
+            const currentIndex = currentSlideMap[sec.id] || 0;
+            updateSlide(sec.id, currentIndex + 1);
+        };
+
+        // Dots (Индикаторы слайдов)
+        const dotsContainer = document.createElement('div');
+        dotsContainer.className = 'slider-dots';
+        sec.sliderPhotos.forEach((_, index) => {
+            const dot = document.createElement('span');
+            dot.className = 'dot';
+            dot.onclick = () => {
+                updateSlide(sec.id, index);
+            };
+            dotsContainer.appendChild(dot);
+        });
+
+        sliderContainer.appendChild(track);
+        sliderContainer.appendChild(navLeft);
+        sliderContainer.appendChild(navRight);
+        sliderContainer.appendChild(dotsContainer);
+        
+        // Обертка-карточка
+        const introCard = document.createElement('div');
+        introCard.className = 'intro-card'; 
+        introCard.appendChild(sliderContainer);
+
+        // Основное описание под слайдером
+        const p = document.createElement('p');
+        p.textContent = (LANG === 'en' ? sec.introDescEN : sec.introDescPL);
+        introCard.appendChild(p);
+        
+        return introCard;
+    }
+    // END SLIDER LOGIC
+
 
     function createNav(){
       nav.innerHTML = '';
@@ -639,15 +848,20 @@
         h2.className = 'menu-section'; 
         s.appendChild(h2);
 
-        // 1. Создание карточки с общим фото и описанием
-        if (sec.introPhoto) {
-            const introCard = document.createElement('div');
+        // 1. Создание карточки с общим фото/слайдером и описанием
+        let introCard = null;
+        
+        if (sec.sliderPhotos && sec.sliderPhotos.length > 0) {
+            // Если есть слайдер-фото
+            introCard = createSliderStructure(sec);
+        } else if (sec.introPhoto) {
+            // Если есть одиночное фото
+            introCard = document.createElement('div');
             introCard.className = 'intro-card'; 
             
             const img = document.createElement('img');
             img.src = sec.introPhoto;
             img.alt = sec.title[LANG];
-            // Добавлена логика проверки на placeholder в openLightbox, чтобы избежать ошибок.
             img.onclick = () => { openLightbox(sec.introPhoto); }; 
             
             // Основное описание
@@ -656,7 +870,9 @@
             
             introCard.appendChild(img);
             introCard.appendChild(p);
-            
+        }
+
+        if (introCard) {
             // Дополнительное маленькое примечание (для рамена)
             if (sec.smallNoteEN && sec.smallNotePL) {
                 const smallNote = document.createElement('p');
@@ -687,7 +903,7 @@
                 const h3Left = document.createElement('h3');
                 h3Left.textContent = (LANG === 'en' ? 'Uramaki' : 'Uramaki');
                 colLeft.appendChild(h3Left);
-                renderItems(colLeft, sec.items_uramaki); // Рендерим обычные урамаки
+                renderItems(colLeft, sec.items_uramaki); 
                 container.appendChild(colLeft);
 
                 // Создаем правую колонку
@@ -696,7 +912,7 @@
                 const h3Right = document.createElement('h3');
                 h3Right.textContent = (LANG === 'en' ? 'Uramaki in Tempura' : 'Uramaki w Tempurze');
                 colRight.appendChild(h3Right);
-                renderItems(colRight, sec.items_tempura); // Рендерим темпура урамаки
+                renderItems(colRight, sec.items_tempura); 
                 container.appendChild(colRight);
 
             } else {
@@ -706,22 +922,16 @@
             
             details.appendChild(container);
             s.appendChild(details); 
-            
-        } else {
-            // Если нет introPhoto (для старых секций, если понадобятся)
-            const sectionWithoutIntro = document.createElement('div');
-            sectionWithoutIntro.className = 'section';
-
-            const container = document.createElement('div');
-            container.className='items';
-
-            renderItems(container, sec.items);
-            
-            sectionWithoutIntro.appendChild(container);
-            s.appendChild(sectionWithoutIntro);
-        }
+        } 
         
         menuArea.appendChild(s);
+
+        // --- ИНИЦИАЛИЗАЦИЯ СЛАЙДЕРА ПОСЛЕ ДОБАВЛЕНИЯ В DOM ---
+        if (sec.sliderPhotos && sec.sliderPhotos.length > 0) {
+            // Инициализируем слайдер на текущем или нулевом слайде
+            updateSlide(sec.id, currentSlideMap[sec.id] || 0); 
+        }
+
       });
     }
     // --- КОНЕЦ ФУНКЦИИ РЕНДЕРИНГА ---
@@ -759,7 +969,6 @@
     const closeBtn = document.querySelector('.lightbox-close');
 
     function openLightbox(imgPath) {
-      // Это предотвращает открытие лайтбокса для плейсхолдеров
       if (imgPath.includes('placeholder')) {
         return; 
       }
