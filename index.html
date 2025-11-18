@@ -380,13 +380,14 @@
         padding-bottom: 10px;
         border-top: 1px solid rgba(0,0,0,0.05); 
         
-        /* Ключевые стили для анимации */
+        /* Начальное состояние: скрыто */
         overflow: hidden;
-        max-height: 0;
+        height: 0; 
         opacity: 0;
-        transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        /* Плавный переход */
+        transition: height 0.3s ease, opacity 0.3s ease;
     }
-    /* --- КОНЕЦ СТИЛЕЙ АНИМАЦИИ --- */
+    /* --- КОНЕЦ СТИЛЕЙ СПИСКА --- */
 
     /* --- СТИЛИ ДЛЯ 2-КОЛОНОЧНОГО МАКЕТА URAMAKI --- */
     #uramaki-combined .items {
@@ -527,7 +528,7 @@
           {enName:'Ebi', plName:'Ebi', descEN:'shrimp', descPL:'krewetka', price:'30 zł'}
         ]
       },
-      // --- РАЗДЕЛ FUTOMAKI (ОТДЕЛЬНО) - КОЛИЧЕСТВО ИЗМЕНЕНО НА 6, ПОЗИЦИИ ВОССТАНОВЛЕНЫ ---
+      // --- РАЗДЕЛ FUTOMAKI (ОТДЕЛЬНО) ---
       {
         id:'futomaki',
         title:{en:'Futomaki (6 pc)', pl:'Futomaki (6 szt.)'},
@@ -774,50 +775,50 @@
             details.appendChild(container);
             s.appendChild(details); 
             
-            // --- ЛОГИКА ПЛАВНОЙ АНИМАЦИИ ---
+            // --- ЛОГИКА ПЛАВНОЙ АНИМАЦИИ ОТКРЫТИЯ СПИСКА ---
             summary.addEventListener('click', (e) => {
-                e.preventDefault(); 
+                e.preventDefault(); // 1. Предотвращаем стандартное поведение
                 
                 const content = details.querySelector('.items');
-                // Убеждаемся, что элемент найден (особенно для вложенных структур)
-                if (!content) return;
-                
-                const transitionDuration = 300; 
+                const transitionDuration = 300; // 0.3s из CSS
                 
                 if (details.open) {
                     // ЗАКРЫТИЕ
-                    details.open = false; // Сразу меняем состояние стрелки
+                    // 1. Задаем точную высоту (чтобы анимация сработала от X до 0)
+                    content.style.height = content.scrollHeight + 'px';
                     
-                    // Фиксируем текущую высоту
-                    content.style.maxHeight = content.scrollHeight + 'px';
-                    content.offsetHeight; // Reflow
-                    
-                    // Анимируем к 0
-                    content.style.maxHeight = '0px';
-                    content.style.opacity = '0';
-                    
-                    // Удаляем инлайн стили после анимации
+                    // 2. Форсируем перерисовку (requestAnimationFrame)
+                    requestAnimationFrame(() => {
+                        content.style.height = '0px';
+                        content.style.opacity = '0';
+                    });
+
+                    // 3. Ждем окончания анимации перед удалением атрибута open
                     setTimeout(() => {
-                        content.style.maxHeight = ''; 
-                    }, transitionDuration); 
+                        details.open = false;
+                        // Убираем inline стили, чтобы не мешать следующему открытию
+                        content.style.height = ''; 
+                        content.style.opacity = '';
+                    }, transitionDuration);
 
                 } else {
                     // ОТКРЫТИЕ
-                    details.open = true; // Сразу меняем состояние стрелки
+                    details.open = true;
                     
-                    // Анимируем к полной высоте
-                    content.style.maxHeight = content.scrollHeight + 'px';
-                    content.style.opacity = '1';
+                    // 1. Начальное состояние
+                    content.style.height = '0px';
+                    content.style.opacity = '0';
                     
-                    // После анимации убираем max-height, чтобы контент был адаптивным
-                    const onTransitionEnd = () => {
-                        if (details.open) {
-                            content.style.maxHeight = 'none';
-                        }
-                        content.removeEventListener('transitionend', onTransitionEnd);
-                    };
+                    // 2. Форсируем перерисовку
+                    requestAnimationFrame(() => {
+                         content.style.height = content.scrollHeight + 'px';
+                         content.style.opacity = '1';
+                    });
                     
-                    content.addEventListener('transitionend', onTransitionEnd, {once: true});
+                    // 3. После завершения анимации сбрасываем height в auto
+                    setTimeout(() => {
+                        content.style.height = 'auto';
+                    }, transitionDuration);
                 }
             });
             // --- КОНЕЦ ЛОГИКИ АНИМАЦИИ ---
