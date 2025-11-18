@@ -130,7 +130,7 @@
     .left{
       flex:1.1;
       min-width:260px;
-      /* Анимация смены языка */
+      /* АНИМАЦИЯ СМЕНЫ ЯЗЫКА */
       opacity: 1; 
       transition: opacity 0.3s ease; 
     }
@@ -380,14 +380,13 @@
         padding-bottom: 10px;
         border-top: 1px solid rgba(0,0,0,0.05); 
         
-        /* Подготовка к анимации */
+        /* Настройки анимации */
         overflow: hidden;
-        max-height: 0; /* Скрыто */
-        opacity: 0; /* Прозрачно */
-        will-change: max-height, opacity;
-        transition: max-height 0.3s ease-out, opacity 0.3s ease-out; 
+        max-height: 0;
+        opacity: 0;
+        transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
     }
-    /* --- КОНЕЦ СТИЛЕЙ СПИСКА --- */
+    /* --- КОНЕЦ СТИЛЕЙ АНИМАЦИИ --- */
 
     /* --- СТИЛИ ДЛЯ 2-КОЛОНОЧНОГО МАКЕТА URAMAKI --- */
     #uramaki-combined .items {
@@ -775,7 +774,7 @@
             details.appendChild(container);
             s.appendChild(details); 
             
-            // --- ЛОГИКА ПЛАВНОЙ АНИМАЦИИ ---
+            // --- ЛОГИКА ПЛАВНОЙ АНИМАЦИИ ОТКРЫТИЯ СПИСКА ---
             summary.addEventListener('click', (e) => {
                 e.preventDefault(); // 1. Предотвращаем стандартное поведение
                 
@@ -817,7 +816,7 @@
                     const onTransitionEnd = () => {
                         // Очищаем max-height, чтобы контент мог свободно менять высоту (респонсивность)
                         if (details.open) {
-                            content.style.maxHeight = '';
+                            content.style.maxHeight = 'none';
                         }
                         content.removeEventListener('transitionend', onTransitionEnd);
                     };
