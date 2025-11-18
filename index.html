@@ -10,7 +10,7 @@
       --muted:#7b7b7b;
       --accent:#d88b6a;
       --text:#111;
-      --dark-btn:#222; /* Цвет для новых кнопок контактов */
+      --dark-btn:#222; 
       --maxw:1000px;
       --radius:12px;
     }
@@ -65,45 +65,77 @@
     h1{margin:0;font-size:20px;letter-spacing:0.6px}
     .sub{color:var(--muted); font-size:13px}
 
-    /* --- Floating Language Switch --- */
-    .lang-switch-fixed{
+    /* --- НОВЫЙ ФИКСИРОВАННЫЙ БЛОК (ЯЗЫК + ИКОНКИ) --- */
+    .fixed-widget {
       position: fixed;
-      top: 24px; /* Отступ сверху */
-      right: 24px; /* Отступ справа */
-      z-index: 200; 
-      background: var(--card); 
-      padding: 8px; 
+      top: 24px;
+      right: 24px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column; /* Вертикальное расположение рядов */
+      align-items: flex-end;  /* Выравнивание по правому краю */
+      gap: 8px;
+    }
+
+    /* Общий стиль для рядов (язык и иконки) */
+    .widget-row {
+      background: var(--card);
+      padding: 6px;
       border-radius: var(--radius);
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       display: flex;
-      gap: 8px;
+      gap: 6px;
+    }
+
+    /* Кнопки языка */
+    .lang-btn {
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.06);
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: background 0.2s;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: transparent;
+    }
+
+    /* Кнопки иконок */
+    .icon-btn {
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.06);
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 16px; /* Размер эмодзи */
+      line-height: 1;
+      display: flex;
       align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.2s;
     }
-    .lang-btn{
-      background:transparent;
-      border:1px solid rgba(0,0,0,0.06);
-      padding:8px 10px;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:600;
+    .icon-btn:hover {
+      background: rgba(0,0,0,0.03);
+      transform: translateY(-1px);
     }
-    .lang-btn.active{
-      background:var(--accent);
-      color:white;
-      border-color:transparent;
-    }
+
+    /* Адаптация для мобильных */
     @media (max-width: 500px) {
-      .lang-switch-fixed {
+      .fixed-widget {
         top: 15px;
         right: 15px;
-        padding: 6px;
       }
       .wrap {
-        padding: 15px; /* Уменьшаем общий паддинг на мобильных */
-        padding-top: 65px; /* Корректируем отступ для плавающей кнопки */
+        padding: 15px;
+        padding-top: 85px; /* Чуть больше отступ, так как блок стал выше */
       }
     }
-    /* --- Конец Floating Language Switch --- */
+    /* --- КОНЕЦ ФИКСИРОВАННОГО БЛОКА --- */
 
 
     nav{
@@ -178,7 +210,7 @@
     }
     /* Конец разделителя */
 
-    /* --- НОВЫЕ СТИЛИ ДЛЯ КОНТАКТОВ (КНОПКИ-ТАБЛЕТКИ) --- */
+    /* Стили для кнопок-контактов внизу */
     #contacts {
       display: flex;
       flex-direction: column;
@@ -188,13 +220,13 @@
     .contact-btn {
       display: flex;
       align-items: center;
-      justify-content: center; /* Центровка текста */
+      justify-content: center;
       gap: 10px;
       padding: 12px 20px;
-      background-color: var(--dark-btn); /* Темный фон как на фото */
-      color: #fff !important; /* Белый текст */
+      background-color: var(--dark-btn);
+      color: #fff !important;
       text-decoration: none;
-      border-radius: 999px; /* Форма таблетки */
+      border-radius: 999px;
       font-weight: 600;
       font-size: 14px;
       transition: transform 0.2s, opacity 0.2s;
@@ -208,14 +240,12 @@
       text-decoration: none;
     }
 
-    /* Увеличение кнопок на мобильных устройствах */
     @media (max-width: 600px) {
       .contact-btn {
-        padding: 16px 24px; /* Больше отступы */
-        font-size: 16px; /* Больше шрифт */
+        padding: 16px 24px;
+        font-size: 16px;
       }
     }
-    /* ---------------------------------------------------- */
 
     footer{
       margin-top:18px;
@@ -329,7 +359,16 @@
         border-radius: var(--radius);
         display: block;
         cursor: pointer;
+        /* Убираем нижний border-radius у последнего фото в стеке, если оно есть */
         margin-bottom: 0 !important;
+    }
+    
+    /* Стили для подписи внутри фото в стеке */
+    .stack-caption {
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+        padding: 5px 0 0 0;
     }
 
     /* СТИЛИ ДЛЯ ОДИНОЧНОГО ИЗОБРАЖЕНИЯ (ВСЕ ДРУГИЕ СЕКЦИИ) */
@@ -403,26 +442,20 @@
         transform: translateY(-50%) rotate(180deg);
     }
     
-    /* --- ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ ПЛАВНОЙ АНИМАЦИИ --- */
+    /* --- СТИЛИ ДЛЯ ПЛАВНОЙ АНИМАЦИИ ОТКРЫТИЯ СПИСКА --- */
     details .items {
-        /* Важно: анимируем padding вместе с высотой, иначе будет прыжок */
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-top: 1px solid rgba(0,0,0,0.05); 
+        
         overflow: hidden;
         max-height: 0;
         opacity: 0;
-        padding-top: 0;
-        padding-bottom: 0;
-        border-top: none;
-        
         will-change: max-height, opacity, padding;
-        transition: 
-            max-height 0.3s ease-in-out, 
-            opacity 0.3s ease-in-out,
-            padding 0.3s ease-in-out;
+        transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
     }
-
-    /* Класс, который мы добавим JS-ом при открытии */
+    
     details[open] .items.open-animation {
-        /* Значения высоты поставим через JS, но паддинги возвращаем */
         padding-top: 10px;
         padding-bottom: 10px;
         border-top: 1px solid rgba(0,0,0,0.05); 
@@ -473,9 +506,16 @@
 <body>
   <div class="wrap" id="app">
     
-    <div class="lang-switch-fixed" id="lang-switch-fixed">
-      <button class="lang-btn active" data-lang="pl">PL</button>
-      <button class="lang-btn" data-lang="en">EN</button>
+    <div class="fixed-widget">
+      <div class="widget-row">
+        <button class="lang-btn active" data-lang="pl">PL</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <div class="widget-row">
+        <a href="tel:+48502525544" class="icon-btn">📞</a>
+        <a href="https://www.instagram.com/ksiestwosushi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="icon-btn">📸</a>
+        <a href="https://maps.app.goo.gl/1WmFXGEPnDcBiz3p9" target="_blank" class="icon-btn">📍</a>
+      </div>
     </div>
 
     <header>
@@ -526,7 +566,8 @@
         introPhotos: [ 
             {src: 'images/wakame.jpg', nameEN: 'Goma Wakame', namePL: 'Goma Wakame'},
             {src: 'images/ebiten.jpg', nameEN: 'Ebiten (3 pcs)', namePL: 'Ebiten (3 szt.)'},
-            {src: 'images/sake-tataki.jpg', nameEN: 'Sake Tataki', namePL: 'Sake Tataki'},
+            // ОБЪЕДИНЕННОЕ НАЗВАНИЕ
+            {src: 'images/sake-tataki.jpg', nameEN: 'Sake & Maguro Tataki', namePL: 'Sake & Maguro Tataki'},
         ],
         items:[
           {enName:'Goma Wakame', plName:'Goma Wakame', descEN:'wakame salad', descPL:'sałatka wakame', price:'20 zł'},
@@ -640,7 +681,7 @@
         introDescEN: 'Thinly sliced raw fish and seafood, served without rice.',
         introDescPL: 'Cienko krojone plastry surowej ryby i owoców morza, podawane bez ryżu.',
         items:[
-          {enName:'Mizu', plName:'Mizu', descEN:'slices of raw fish — salmon, tuna, butterfish', descPL:'plastry surowej ryby — łosoś, tuńczyk, maślana', price:'95 zł'} // ЦЕНА ИСПРАВЛЕНА НА 95
+          {enName:'Mizu', plName:'Mizu', descEN:'slices of raw fish — salmon, tuna, butterfish', descPL:'plastry surowej ryby — łosoś, tuńczyk, maślana', price:'95 zł'}
         ]
       }
     ];
@@ -648,7 +689,8 @@
     // helper to render
     const nav = document.getElementById('nav');
     const menuArea = document.getElementById('menu-area');
-    const langBtns = document.querySelectorAll('#lang-switch-fixed .lang-btn'); 
+    // ИЩЕМ КНОПКИ ВНУТРИ FIXED WIDGET
+    const langBtns = document.querySelectorAll('.fixed-widget .lang-btn'); 
     let LANG = 'pl'; 
 
     
@@ -682,6 +724,7 @@
             
             const desc = document.createElement('div');
             desc.className='desc';
+            // ВАЖНО: descEN/descPL используется для вывода описания
             desc.textContent = (LANG==='en'?it.descEN:it.descPL) || '';
             
             const price = document.createElement('div');
@@ -689,10 +732,11 @@
             price.textContent = it.price || '';
 
             meta.appendChild(name);
+            // ОПИСАНИЕ ВОССТАНОВЛЕНО
             if(desc.textContent) meta.appendChild(desc); 
 
             itemContent.appendChild(meta);
-            itemContent.appendChild(price); 
+            itemContent.appendChild(price); // Цена отделена от мета-блока
 
             div.appendChild(itemContent);
             container.appendChild(div);
@@ -727,6 +771,7 @@
             sec.introPhotos.forEach(photo => {
                 const img = document.createElement('img');
                 img.src = photo.src;
+                // Alt text now combines name and description
                 img.alt = (LANG === 'en' ? photo.nameEN : photo.namePL);
                 img.onclick = () => { openLightbox(photo.src); }; 
                 
@@ -735,6 +780,7 @@
 
             introCard.appendChild(stack);
 
+            // Основное описание под стеком
             const p = document.createElement('p');
             p.textContent = (LANG === 'en' ? sec.introDescEN : sec.introDescPL);
             introCard.appendChild(p);
@@ -747,8 +793,10 @@
             const img = document.createElement('img');
             img.src = sec.introPhoto;
             img.alt = sec.title[LANG];
+            // Поскольку это одно фото, его можно сразу открыть в лайтбоксе
             img.onclick = () => { openLightbox(sec.introPhoto); }; 
             
+            // Основное описание
             const p = document.createElement('p');
             p.textContent = (LANG === 'en' ? sec.introDescEN : sec.introDescPL);
             
