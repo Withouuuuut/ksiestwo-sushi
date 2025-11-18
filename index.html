@@ -65,20 +65,20 @@
     h1{margin:0;font-size:20px;letter-spacing:0.6px}
     .sub{color:var(--muted); font-size:13px}
 
-    /* --- НОВЫЙ ФИКСИРОВАННЫЙ БЛОК (ЯЗЫК + ИКОНКИ) --- */
+    /* --- ФИКСИРОВАННЫЙ ВИДЖЕТ (ЯЗЫК + ИКОНКИ В СТОЛБИК) --- */
     .fixed-widget {
       position: fixed;
       top: 24px;
       right: 24px;
       z-index: 200;
       display: flex;
-      flex-direction: column; /* Вертикальное расположение рядов */
+      flex-direction: column; /* Вертикальный стек */
       align-items: flex-end;  /* Выравнивание по правому краю */
-      gap: 8px;
+      gap: 12px; /* Расстояние между блоком языка и иконками */
     }
 
-    /* Общий стиль для рядов (язык и иконки) */
-    .widget-row {
+    /* Блок переключения языка */
+    .lang-row {
       background: var(--card);
       padding: 6px;
       border-radius: var(--radius);
@@ -87,7 +87,6 @@
       gap: 6px;
     }
 
-    /* Кнопки языка */
     .lang-btn {
       background: transparent;
       border: 1px solid rgba(0,0,0,0.06);
@@ -104,24 +103,33 @@
       border-color: transparent;
     }
 
-    /* Кнопки иконок */
-    .icon-btn {
-      background: transparent;
-      border: 1px solid rgba(0,0,0,0.06);
-      padding: 6px 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      text-decoration: none;
-      font-size: 16px; /* Размер эмодзи */
-      line-height: 1;
+    /* Контейнер для иконок (столбик) */
+    .icons-column {
       display: flex;
+      flex-direction: column;
+      gap: 12px; /* Расстояние между иконками */
       align-items: center;
-      justify-content: center;
-      transition: background 0.2s, transform 0.2s;
     }
-    .icon-btn:hover {
-      background: rgba(0,0,0,0.03);
-      transform: translateY(-1px);
+
+    /* Стили самих иконок-ссылок */
+    .icon-link {
+      display: block;
+      transition: transform 0.2s;
+      line-height: 0; /* Убирает лишние отступы у картинки */
+    }
+
+    .icon-link img {
+      width: 44px; /* Размер иконок */
+      height: 44px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); /* Тень для красоты */
+      border-radius: 50%; /* Если иконки круглые, это поможет */
+      background: white; /* Белый фон, если иконки прозрачные */
+      padding: 4px; /* Отступ внутри круга */
+    }
+
+    .icon-link:hover {
+      transform: scale(1.1); /* Увеличение при наведении */
     }
 
     /* Адаптация для мобильных */
@@ -129,10 +137,15 @@
       .fixed-widget {
         top: 15px;
         right: 15px;
+        gap: 10px;
       }
       .wrap {
         padding: 15px;
-        padding-top: 85px; /* Чуть больше отступ, так как блок стал выше */
+        padding-top: 85px; 
+      }
+      .icon-link img {
+        width: 40px;
+        height: 40px;
       }
     }
     /* --- КОНЕЦ ФИКСИРОВАННОГО БЛОКА --- */
@@ -210,7 +223,7 @@
     }
     /* Конец разделителя */
 
-    /* Стили для кнопок-контактов внизу */
+    /* Стили для кнопок-контактов внизу (оставляем как альтернативу) */
     #contacts {
       display: flex;
       flex-direction: column;
@@ -507,14 +520,20 @@
   <div class="wrap" id="app">
     
     <div class="fixed-widget">
-      <div class="widget-row">
+      <div class="lang-row">
         <button class="lang-btn active" data-lang="pl">PL</button>
         <button class="lang-btn" data-lang="en">EN</button>
       </div>
-      <div class="widget-row">
-        <a href="tel:+48502525544" class="icon-btn">📞</a>
-        <a href="https://www.instagram.com/ksiestwosushi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="icon-btn">📸</a>
-        <a href="https://maps.app.goo.gl/1WmFXGEPnDcBiz3p9" target="_blank" class="icon-btn">📍</a>
+      <div class="icons-column">
+        <a href="tel:+48502525544" class="icon-link">
+          <img src="images/phone.png" alt="Phone">
+        </a>
+        <a href="https://www.instagram.com/ksiestwosushi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="icon-link">
+          <img src="images/instagram.png" alt="Instagram">
+        </a>
+        <a href="https://maps.app.goo.gl/1WmFXGEPnDcBiz3p9" target="_blank" class="icon-link">
+          <img src="images/google_maps.png" alt="Map">
+        </a>
       </div>
     </div>
 
@@ -681,7 +700,7 @@
         introDescEN: 'Thinly sliced raw fish and seafood, served without rice.',
         introDescPL: 'Cienko krojone plastry surowej ryby i owoców morza, podawane bez ryżu.',
         items:[
-          {enName:'Mizu', plName:'Mizu', descEN:'slices of raw fish — salmon, tuna, butterfish', descPL:'plastry surowej ryby — łosoś, tuńczyk, maślana', price:'95 zł'}
+          {enName:'Mizu', plName:'Mizu', descEN:'slices of raw fish — salmon, tuna, butterfish', descPL:'plastry surowej ryby — łosoś, tuńczyk, maślana', price:'95 zł'} // ЦЕНА ИСПРАВЛЕНА НА 95
         ]
       }
     ];
@@ -689,7 +708,6 @@
     // helper to render
     const nav = document.getElementById('nav');
     const menuArea = document.getElementById('menu-area');
-    // ИЩЕМ КНОПКИ ВНУТРИ FIXED WIDGET
     const langBtns = document.querySelectorAll('.fixed-widget .lang-btn'); 
     let LANG = 'pl'; 
 
