@@ -81,7 +81,15 @@
       top: 24px;
       right: 24px;
       z-index: 200;
+      transition: transform 0.4s var(--ease), opacity 0.4s var(--ease);
     }
+    /* Hidden state for scroll */
+    .fixed-widget.hidden {
+        transform: translateY(-100px);
+        opacity: 0;
+        pointer-events: none;
+    }
+
     .lang-row {
       background: #fff;
       padding: 5px;
@@ -176,10 +184,9 @@
     /* --- IMAGES --- */
     .intro-media {
         width: 100%;
-        padding: 0 8px 10px 8px; /* Reduced side padding for wider look */
+        padding: 0 8px 10px 8px; 
     }
     
-    /* Single Image Style */
     .single-img {
         width: 100%;
         height: 240px;
@@ -190,7 +197,6 @@
     }
     .single-img:hover { transform: scale(1.02); }
 
-    /* Vertical Stack Grid for Starters */
     .stack-grid {
         display: flex;
         flex-direction: column;
@@ -198,7 +204,7 @@
     }
     .stack-img {
         width: 100%;
-        height: 160px; /* Reduced height slightly for better stack proportions */
+        height: 160px; 
         object-fit: cover;
         border-radius: 12px;
         cursor: pointer;
@@ -211,7 +217,7 @@
     }
 
     .intro-text {
-        padding: 0 20px 20px 20px;
+        padding: 0 20px 6px 20px; /* Reduced bottom padding */
         color: var(--muted);
         font-size: 15px;
         line-height: 1.5;
@@ -224,10 +230,10 @@
         border-top: 1px solid #eee;
     }
 
-    /* --- ULTRA SMOOTH ACCORDION (CSS GRID TRICK) --- */
+    /* --- ACCORDION --- */
     .accordion-trigger {
         width: 100%;
-        padding: 16px 20px;
+        padding: 12px 20px; /* Reduced vertical padding */
         background: #fdfdfd;
         border: none;
         border-top: 1px solid #f0f0f0;
@@ -251,10 +257,7 @@
         color: var(--muted);
         transition: transform 0.4s var(--ease);
     }
-    /* Rotate icon when active */
-    .accordion-wrapper.active .trigger-icon {
-        transform: rotate(180deg);
-    }
+    .accordion-wrapper.active .trigger-icon { transform: rotate(180deg); }
 
     .accordion-content {
         display: grid;
@@ -266,15 +269,8 @@
         grid-template-rows: 1fr;
         opacity: 1;
     }
-    
-    .min-h-0 {
-        overflow: hidden;
-    }
-    
-    .items-list {
-        padding: 20px;
-        background: #fff;
-    }
+    .min-h-0 { overflow: hidden; }
+    .items-list { padding: 20px; background: #fff; }
 
     /* --- MENU ITEMS --- */
     .item {
@@ -293,34 +289,86 @@
     .item-info { flex: 1; padding-right: 20px; }
     .item-name { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
     .item-desc { 
-        font-size: 14px; 
-        color: var(--muted); 
-        line-height: 1.4;
-        white-space: pre-line;
+        font-size: 14px; color: var(--muted); line-height: 1.4; white-space: pre-line;
     }
     .item-price { 
-        font-weight: 700; 
-        color: var(--accent); 
-        font-size: 16px; 
-        white-space: nowrap;
+        font-weight: 700; color: var(--accent); font-size: 16px; white-space: nowrap;
     }
 
     /* --- URAMAKI GRID --- */
     .cols-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
+        display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
     }
     .col-title {
-        font-size: 14px;
-        font-weight: 700;
-        color: var(--accent);
-        text-transform: uppercase;
-        border-bottom: 2px solid #ffeadd;
-        padding-bottom: 8px;
-        margin-bottom: 16px;
+        font-size: 14px; font-weight: 700; color: var(--accent);
+        text-transform: uppercase; border-bottom: 2px solid #ffeadd;
+        padding-bottom: 8px; margin-bottom: 16px;
     }
     @media (max-width:700px) { .cols-2 { grid-template-columns: 1fr; gap: 20px; } }
+
+    /* --- FLOATING ALLERGY BTN --- */
+    .allergy-btn {
+        position: fixed;
+        bottom: 30px; 
+        right: 30px;
+        width: 56px; height: 56px;
+        background: #fff;
+        color: var(--accent);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 28px; font-weight: 800; font-family: sans-serif;
+        box-shadow: 0 8px 24px rgba(216, 139, 106, 0.4);
+        cursor: pointer;
+        z-index: 100;
+        border: 2px solid var(--accent);
+        transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+        animation: pulse 2s infinite;
+    }
+    .allergy-btn:hover { animation: none; transform: scale(1.1); }
+    
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(216, 139, 106, 0.7); }
+        70% { box-shadow: 0 0 0 15px rgba(216, 139, 106, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(216, 139, 106, 0); }
+    }
+
+    /* --- INFO MODAL --- */
+    .info-modal {
+        position: fixed; inset: 0; z-index: 2000;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(8px);
+        display: flex; justify-content: center; align-items: center;
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.3s var(--ease);
+        padding: 20px;
+    }
+    .info-modal.open { opacity: 1; pointer-events: auto; }
+    
+    .info-card {
+        background: #fff;
+        width: 100%; max-width: 450px;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        transform: scale(0.9); opacity: 0;
+        transition: all 0.4s var(--ease);
+        position: relative;
+        text-align: center;
+    }
+    .info-modal.open .info-card { transform: scale(1); opacity: 1; }
+    
+    .info-close {
+        position: absolute; top: 15px; right: 20px;
+        font-size: 28px; color: var(--muted); cursor: pointer;
+        line-height: 1;
+    }
+    .info-icon { font-size: 40px; margin-bottom: 16px; display: block; }
+    .info-title { font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--text); }
+    .info-text { font-size: 15px; line-height: 1.6; color: var(--muted); margin-bottom: 20px; }
+    .info-note { 
+        font-size: 13px; font-style: italic; color: #555; 
+        background: #f4f4f4; padding: 12px; border-radius: 12px; 
+    }
 
     /* --- SIDEBAR & FOOTER --- */
     .contact-card {
@@ -404,6 +452,8 @@
       <button class="lang-btn" onclick="setLang('en')">EN</button>
     </div>
   </div>
+  
+  <div class="allergy-btn" onclick="openInfo()">!</div>
 
   <div class="wrap">
     <header>
@@ -437,12 +487,47 @@
     </footer>
   </div>
 
+  <!-- LIGHTBOX -->
   <div class="lightbox" id="lb" onclick="closeLb()">
     <span class="lb-close">&times;</span>
     <img src="" class="lb-img" id="lb-img">
   </div>
+  
+  <!-- INFO MODAL -->
+  <div class="info-modal" id="info-modal" onclick="closeInfo(event)">
+    <div class="info-card">
+      <span class="info-close" onclick="closeInfo(event)">&times;</span>
+      <div class="info-icon">⚠️</div>
+      <div class="info-title" id="info-title"></div>
+      <div class="info-text" id="info-text"></div>
+      <div class="info-note" id="info-note"></div>
+    </div>
+  </div>
 
   <script>
+    // --- SCROLL LOGIC FOR LANG WIDGET ---
+    window.addEventListener('scroll', () => {
+        const widget = document.querySelector('.fixed-widget');
+        if (window.scrollY > 50) {
+            widget.classList.add('hidden');
+        } else {
+            widget.classList.remove('hidden');
+        }
+    });
+
+    // --- ALLERGENS ---
+    const ALLERGIES = {
+        title: { en: 'Allergy Information', pl: 'Informacja o alergenach' },
+        text: {
+            en: 'According to the recipe, they may contain: gluten, cucumber, oshinko, kampyo, avocado, mango, melon, lettuce, sesame seeds, Philadelphia cream cheese, mayonnaise, sauces, edible gold.',
+            pl: 'Zgodnie z recepturą mogą zawierać: gluten, ogórek, oshinko, kampyo, awokado, mango, melon, sałatę, sezam, serek philadelphia, majonez, sosy, złoto jadalne.'
+        },
+        service: {
+            en: 'We kindly inform you that we add a waiter service of 10% to the final bill.',
+            pl: 'Uprzejmie informujemy, że doliczamy serwis kelnerski w wysokości 10% do rachunku końcowego.'
+        }
+    };
+
     // --- DATA ---
     const DATA = [
       {
@@ -606,6 +691,11 @@
       document.getElementById('lbl-contacts').innerText = LANG==='en' ? 'Contacts' : 'Kontakt';
       document.getElementById('lbl-web').innerText = LANG==='en' ? 'Menu — open web version' : 'Menu — wersja online';
 
+      // Update Info Modal Content
+      document.getElementById('info-title').innerText = LANG==='en'?ALLERGIES.title.en:ALLERGIES.title.pl;
+      document.getElementById('info-text').innerText = LANG==='en'?ALLERGIES.text.en:ALLERGIES.text.pl;
+      document.getElementById('info-note').innerText = LANG==='en'?ALLERGIES.service.en:ALLERGIES.service.pl;
+
       // Nav
       const nav = document.getElementById('nav-container');
       nav.innerHTML = DATA.map(s => `
@@ -616,14 +706,13 @@
 
       // Menu
       const container = document.getElementById('menu-container');
-      container.innerHTML = DATA.map(section => {
+      const menuHTML = DATA.map(section => {
         const title = LANG==='en'?section.title.en:section.title.pl;
         const desc = LANG==='en'?section.desc.en:section.desc.pl;
         
         // Image logic
         let mediaHtml = '';
         if(section.gallery) {
-            // UPDATED: Simple vertical stack of full-width images
             mediaHtml = `<div class="stack-grid">
                 ${section.gallery.map(g=> `<img src="${g.src}" class="stack-img" onclick="openLb('${g.src}')">`).join('')}
             </div>`;
@@ -678,6 +767,23 @@
         `;
       }).join('');
 
+      // Add static allergy block at the bottom
+      const allergyHTML = `
+        <div class="menu-block" style="border:none; box-shadow:none; background:transparent;">
+            <div class="block-header" style="padding-bottom:10px; padding-left:0;">
+                <h2 style="font-size:18px; color:var(--muted);">${LANG==='en'?ALLERGIES.title.en:ALLERGIES.title.pl}</h2>
+            </div>
+            <div style="font-size:13px; color:var(--muted); line-height:1.6; background:#fff; padding:20px; border-radius:16px; border:1px solid rgba(0,0,0,0.04);">
+                ${LANG==='en'?ALLERGIES.text.en:ALLERGIES.text.pl}
+                <div style="margin-top:16px; font-style:italic; padding-top:16px; border-top:1px dashed #eee;">
+                    ${LANG==='en'?ALLERGIES.service.en:ALLERGIES.service.pl}
+                </div>
+            </div>
+        </div>
+      `;
+
+      container.innerHTML = menuHTML + allergyHTML;
+
       // Contacts
       document.getElementById('contacts-list').innerHTML = `
         <a href="tel:+48502525544" class="c-btn">
@@ -697,6 +803,22 @@
         el.classList.toggle('active');
     }
 
+    // --- INFO MODAL ---
+    function openInfo() {
+        document.getElementById('info-modal').classList.add('open');
+        // Make button one-time use (hide it)
+        const btn = document.querySelector('.allergy-btn');
+        if(btn) {
+            btn.style.opacity = '0';
+            btn.style.pointerEvents = 'none';
+        }
+    }
+    function closeInfo(e) {
+        if (e.target.id === 'info-modal' || e.target.classList.contains('info-close')) {
+             document.getElementById('info-modal').classList.remove('open');
+        }
+    }
+
     // --- LIGHTBOX ---
     function openLb(src) {
         document.getElementById('lb-img').src = src;
@@ -712,4 +834,3 @@
   </script>
 </body>
 </html>
-
