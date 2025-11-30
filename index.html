@@ -14,8 +14,10 @@
       --dark-btn:#222; 
       --maxw:1000px;
       --radius:16px;
-      --shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
-      --ease: cubic-bezier(0.25, 1, 0.5, 1);
+      /* Оновлена преміум тінь */
+      --shadow: 0 15px 40px -10px rgba(0,0,0,0.1);
+      --shadow-btn: 0 8px 20px -4px rgba(0,0,0,0.12); /* Тінь для кнопок */
+      --ease: cubic-bezier(0.23, 1, 0.32, 1);
     }
     *{box-sizing:border-box}
     body{
@@ -71,7 +73,7 @@
       font-weight:700;
       color:#fff;
       font-size:20px;
-      box-shadow:0 8px 20px -6px rgba(216,139,106,0.4);
+      box-shadow:0 8px 20px -6px rgba(216,139,106,0.6); /* Посилена тінь лого */
     }
     h1{margin:0;font-size:22px;letter-spacing:0.5px}
     .sub{color:var(--muted); font-size:14px; font-style: italic;}
@@ -92,53 +94,64 @@
 
     .lang-row {
       background: #fff;
-      padding: 5px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 6px;
+      border-radius: 14px;
+      /* Глибока тінь для віджету */
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
       display: flex;
-      gap: 4px;
+      gap: 6px;
     }
     .lang-btn {
       background: transparent;
       border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
+      padding: 8px 16px;
+      border-radius: 10px;
       cursor: pointer;
       font-weight: 600;
       font-size: 13px;
       color: var(--muted);
-      transition: all 0.2s var(--ease);
+      transition: all 0.4s var(--ease);
+      position: relative;
+      overflow: hidden;
     }
+    /* Активна кнопка мови з ефектом */
     .lang-btn.active {
       background: var(--accent);
       color: white;
-      box-shadow: 0 2px 8px rgba(216,139,106,0.3);
+      box-shadow: 0 4px 15px rgba(216,139,106,0.5);
+      transform: scale(1.05);
+    }
+    .lang-btn:not(.active):hover {
+      background: #fdfdfd;
+      color: var(--accent);
     }
 
     /* --- NAVIGATION --- */
     nav{
       display:flex;
-      gap:10px;
+      gap:12px;
       flex-wrap:wrap;
       margin-bottom:30px;
     }
     .nav-chip{
       background:#fff;
-      padding:10px 16px;
+      padding:12px 20px;
       border-radius:100px;
       font-weight:600;
-      border:1px solid rgba(0,0,0,0.04);
+      border:none; /* Прибрали бордер для чистоти */
       cursor:pointer;
       font-size:14px;
       color: var(--muted);
-      transition: all 0.3s var(--ease);
+      transition: all 0.4s var(--ease);
       font-family: sans-serif;
+      /* Додана тінь */
+      box-shadow: var(--shadow-btn);
     }
     .nav-chip:hover {
-      background: #fff5f0;
+      background: #fff;
       color: var(--accent);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15); /* Посилена тінь при наведенні */
     }
 
     /* --- LAYOUT --- */
@@ -149,9 +162,18 @@
     }
     .left{
       flex:1;
-      min-width:0; /* fix flex overflow */
-      transition: opacity 0.3s var(--ease);
+      min-width:0; 
+      /* Преміум анімація зміни контенту */
+      transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
+      transform-origin: top center;
     }
+    /* Клас для стану перемикання */
+    .left.switching {
+        opacity: 0;
+        filter: blur(8px);
+        transform: translateY(10px) scale(0.98);
+    }
+
     .right{
       width:300px;
       flex-shrink: 0;
@@ -167,7 +189,7 @@
         background: #fff;
         border-radius: var(--radius);
         margin-bottom: 24px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        box-shadow: 0 4px 25px rgba(0,0,0,0.03); /* Легка тінь блоку */
         border: 1px solid rgba(0,0,0,0.02);
         overflow: hidden;
     }
@@ -193,9 +215,13 @@
         object-fit: cover;
         border-radius: 12px;
         cursor: pointer;
-        transition: transform 0.5s var(--ease);
+        transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    .single-img:hover { transform: scale(1.02); }
+    .single-img:hover { 
+        transform: scale(1.02); 
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
 
     .stack-grid {
         display: flex;
@@ -209,10 +235,11 @@
         border-radius: 12px;
         cursor: pointer;
         transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     .stack-img:hover { 
         transform: scale(1.02); 
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         z-index: 2;
     }
 
@@ -232,18 +259,27 @@
 
     /* --- ACCORDION --- */
     .accordion-trigger {
-        width: 100%;
-        padding: 12px 20px;
+        width: calc(100% - 40px); /* Відступи з боків для ефекту кнопки */
+        margin: 0 20px 20px 20px;
+        padding: 14px 24px;
         background: #fdfdfd;
         border: none;
-        border-top: 1px solid #f0f0f0;
+        border-radius: 12px; /* Закруглені кути */
         cursor: pointer;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        transition: background 0.2s;
+        transition: all 0.3s var(--ease);
+        
+        /* Тінь для кнопки розгортання */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        border: 1px solid rgba(0,0,0,0.02);
     }
-    .accordion-trigger:hover { background: #f8f8f8; }
+    .accordion-trigger:hover { 
+        background: #fff; 
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
     
     .trigger-text {
         font-weight: 700;
@@ -270,7 +306,7 @@
         opacity: 1;
     }
     .min-h-0 { overflow: hidden; }
-    .items-list { padding: 20px; background: #fff; }
+    .items-list { padding: 0 20px 20px 20px; background: #fff; }
 
     /* --- MENU ITEMS --- */
     .item {
@@ -317,14 +353,18 @@
         border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
         font-size: 28px; font-weight: 800; font-family: sans-serif;
-        box-shadow: 0 8px 24px rgba(216, 139, 106, 0.4);
+        box-shadow: 0 8px 25px rgba(216, 139, 106, 0.5); /* Глибока тінь */
         cursor: pointer;
         z-index: 100;
         border: 2px solid var(--accent);
-        transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+        transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
         animation: pulse 2s infinite;
     }
-    .allergy-btn:hover { animation: none; transform: scale(1.1); }
+    .allergy-btn:hover { 
+        animation: none; 
+        transform: scale(1.1) translateY(-2px);
+        box-shadow: 0 15px 35px rgba(216, 139, 106, 0.6);
+    }
     
     @keyframes pulse {
         0% { box-shadow: 0 0 0 0 rgba(216, 139, 106, 0.7); }
@@ -375,7 +415,8 @@
         background: #fff;
         padding: 24px;
         border-radius: var(--radius);
-        box-shadow: var(--shadow);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        border: 1px solid rgba(0,0,0,0.02);
     }
     .contact-card h3 { margin: 0 0 20px 0; font-size: 18px; }
     
@@ -388,15 +429,18 @@
         text-decoration: none;
         padding: 14px 20px;
         border-radius: 50px;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         font-size: 14px;
         font-weight: 600;
-        transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+        transition: all 0.3s var(--ease);
+        /* Тінь кнопок контактів */
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2); 
     }
     .c-btn img { width: 20px; height: 20px; filter: invert(1); }
     .c-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+        background: var(--accent); /* Зміна кольору при наведенні для преміум ефекту */
     }
 
     footer {
@@ -472,8 +516,7 @@
 
     <div class="content">
       <div class="left" id="menu-container">
-        <!-- Menu Items Render Here -->
-      </div>
+        </div>
 
       <div class="right">
         <div class="contact-card">
@@ -489,16 +532,14 @@
     </footer>
   </div>
 
-  <!-- LIGHTBOX -->
   <div class="lightbox" id="lb" onclick="closeLb()">
-    <span class="lb-close">&times;</span>
+    <span class="lb-close">×</span>
     <img src="" class="lb-img" id="lb-img">
   </div>
   
-  <!-- INFO MODAL -->
   <div class="info-modal" id="info-modal" onclick="closeInfo(event)">
     <div class="info-card">
-      <span class="info-close" onclick="closeInfo(event)">&times;</span>
+      <span class="info-close" onclick="closeInfo(event)">×</span>
       <div class="info-icon">⚠️</div>
       <div class="info-title" id="info-title"></div>
       <div class="info-text" id="info-text"></div>
@@ -685,11 +726,15 @@
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.innerText.toLowerCase() === l));
       
       const content = document.querySelector('.left');
-      content.style.opacity = '0';
+      
+      // Додаємо клас для анімації виходу
+      content.classList.add('switching');
+      
       setTimeout(() => {
         render();
-        content.style.opacity = '1';
-      }, 300);
+        // Прибираємо клас, щоб спрацювала анімація входу
+        content.classList.remove('switching');
+      }, 500); // Таймінг відповідає CSS transition
     }
 
     function renderItem(i) {
